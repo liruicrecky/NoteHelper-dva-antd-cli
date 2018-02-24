@@ -46,9 +46,11 @@ class SideMenu extends Component {
                 <span>显示全部论文</span>
               </NavLink>
             </Menu.Item>
-            <Menu.Item key="3">
-              <Icon type="book"/>
-              <span>我关注的论文</span>
+            <Menu.Item key="/dashboard/showMyFollowPaper">
+              <NavLink to="/dashboard/showMyFollowPaper">
+                <Icon type="book"/>
+                <span>我关注的论文</span>
+              </NavLink>
             </Menu.Item>
             <Menu.Item key="4">
               <Icon type="upload"/>

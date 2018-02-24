@@ -65,10 +65,6 @@ class ShowAllPaperContainer extends Component {
     this.props.dispatch({
       type: 'paper/followPaper',
       payload: data,
-    }).then(() => {
-      if(!this.props.error){
-
-      }
     })
   };
 
@@ -98,9 +94,10 @@ class ShowAllPaperContainer extends Component {
       </div>
     ) : null;
     // actions={[<a>edit</a>, <a>more</a>]}
+    //  {/*{this.props.error && message.error('由于不可知原因，关注失败！')}*/}
     return (
       <div>
-        {this.props.error && message.error('由于不可知原因，关注失败！')}
+
         <List
           className={styles["loadmore-list"]}
           loading={loading}

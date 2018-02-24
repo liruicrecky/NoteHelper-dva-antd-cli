@@ -1,45 +1,82 @@
 import React, { Component } from 'react';
-import { List, Button, Spin, message } from 'antd';
+import { List, Button, Spin, Modal, Menu, Dropdown, Icon, Select } from 'antd';
 import { connect } from 'dva';
 
 import styles from './ShowMyFollowPaper.less';
 import { pageSize } from '../../../utils/constant';
 
+const Option = Select.Option;
+
 class ShowMyFollowPaper extends Component {
 
   state = {
-    BeginIndex: 0,
     loading: true,
     loadingMore: false,
     showLoadingMore: true,
+    unFollowVisible: false,
+    addPaperToTagVisible: false,
+    confirmLoading: false,
+    docId: "",
     papers: [],
+    selectTagsChildren: [],
+    selectTags: [],
   };
 
   // load data at first time
   componentDidMount() {
     const values = {
-      BeginIndex: 0,
-      PageSize: pageSize,
-      docType: "M",
+      token: this.props.token,
     };
 
-    this.props.dispatch({ type: 'paper/showAllPaper', payload: values })
+    this.props.dispatch({ type: 'paper/showAllFollowPaper', payload: values })
       .then(() => {
-        let BeginIndex = this.state.BeginIndex + pageSize;
+
+        // select tag
+        const tagNames = this.props.tagNames;
+        const selectTagsChildren = [];
+        tagNames.forEach((v) => {
+          selectTagsChildren.push(<Option key={v}>{v}</Option>);
+        });
+
         this.setState({
-          BeginIndex,
           loading: false,
           papers: this.props.paperList,
+          selectTagsChildren,
         })
       });
   }
 
+  // unFollow paper modal
+  unFollowShowModal = (paperId) => {
+    this.setState({
+      unFollowVisible: true,
+      docId: paperId,
+    });
+  };
+
+  unFollowHandleOk = () => {
+    this.unFollowPaper(this.state.docId);
+    this.setState({
+      confirmLoading: true,
+    });
+    setTimeout(() => {
+      this.setState({
+        unFollowVisible: false,
+        confirmLoading: false,
+      });
+    }, 1000);
+  };
+
+  unFollowHandleCancel = () => {
+    this.setState({
+      unFollowVisible: false,
+    });
+  };
+
   // load more
   getData = () => {
     const values = {
-      BeginIndex: this.state.BeginIndex,
-      PageSize: pageSize,
-      docType: "M",
+      token: this.props.token,
     };
 
     this.props.dispatch({ type: 'paper/showAllPaper', payload: values })
@@ -57,21 +94,6 @@ class ShowMyFollowPaper extends Component {
       });
   };
 
-  followPaper = (paperId) => {
-    const data = {
-      docId: paperId,
-      token: this.props.token,
-    };
-    this.props.dispatch({
-      type: 'paper/followPaper',
-      payload: data,
-    }).then(() => {
-      if(!this.props.error){
-
-      }
-    })
-  };
-
   onLoadMore = () => {
     this.setState({
       loadingMore: true,
@@ -86,21 +108,105 @@ class ShowMyFollowPaper extends Component {
     });
   };
 
+  // unFollow paper
+  unFollowPaper = (paperId) => {
+    const data = {
+      docId: paperId,
+      token: this.props.token,
+    };
+    this.props.dispatch({
+      type: 'paper/unFollowPaper',
+      payload: data,
+    }).then(() => {
+      this.setState({
+        papers: this.state.papers.filter((v) => v.doc_id !== paperId)
+      })
+    })
+  };
+
+  // operation menu click
+  handleMenuClick = (key, e) => {
+    switch (e.key) {
+      case "addToTag":
+        this.addPaperToTagShowModal(key);
+        break;
+      default:
+    }
+  };
+
+  addPaperToTag = (paperId, tagId) => {
+    let data = {
+      token: this.props.token,
+      docId: paperId,
+      tagId: tagId,
+    };
+    this.props.dispatch({
+      type: 'tag/addPaperToTag',
+      payload: data,
+    })
+  };
+
+  // add paper to tag modal function
+  addPaperToTagShowModal = (docId) => {
+    this.setState({
+      docId: docId,
+      addPaperToTagVisible: true,
+    });
+  };
+
+  addPaperToTagHandleOk = () => {
+
+    const paperId = this.state.docId;
+    const tags = this.props.tags;
+    const tag = tags.find((v) => v.tag_name === this.state.selectTags[0]);
+
+    this.addPaperToTag(paperId, tag.tag_id);
+    this.setState({
+      confirmLoading: true,
+      selectTags: [],
+    });
+    setTimeout(() => {
+      this.setState({
+        addPaperToTagVisible: false,
+        confirmLoading: false,
+      });
+    }, 1000);
+  };
+
+  addPaperToTagHandleCancel = () => {
+    console.log('Clicked cancel button');
+    this.setState({
+      addPaperToTagVisible: false,
+    });
+  };
+
+  selectHandleChange = (value) => {
+    this.setState({
+      selectTags: value,
+    });
+  };
+
+  menu = (key) => (
+    <Menu onClick={this.handleMenuClick.bind(this, key)}>
+      <Menu.Item key="addToTag">添加到自定义标签</Menu.Item>
+      <Menu.Item key="2">2nd menu item</Menu.Item>
+      <Menu.Item key="3">3rd item</Menu.Item>
+    </Menu>
+  );
+
   render() {
-    const { loading, loadingMore, showLoadingMore, papers } = this.state;
-    // const { paper } = this.props;
-    // console.log("papers ", paper);
+    const { loading, loadingMore, showLoadingMore, papers, selectTagsChildren } = this.state;
+    const { unFollowVisible, addPaperToTagVisible, confirmLoading } = this.state;
 
     const loadMore = showLoadingMore ? (
       <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
         {loadingMore && <Spin/>}
-        {!loadingMore && <Button onClick={this.onLoadMore}>加载更多</Button>}
+        {!loadingMore && <Button onClick={this.onLoadMore} disabled>加载更多</Button>}
       </div>
     ) : null;
-    // actions={[<a>edit</a>, <a>more</a>]}
+
     return (
       <div>
-        {this.props.error && message.error('由于不可知原因，关注失败！')}
         <List
           className={styles["loadmore-list"]}
           loading={loading}
@@ -109,7 +215,43 @@ class ShowMyFollowPaper extends Component {
           dataSource={papers}
           renderItem={item => (
             <List.Item key={item.doc_id}
-                       extra={<Button onClick={this.followPaper.bind(null, item.doc_id)}>关注</Button>}>
+                       extra={
+                         <div>
+                           <Button onClick={this.unFollowShowModal.bind(this, item.doc_id)}>取消关注</Button>
+                           <Modal title="取消关注"
+                                  visible={unFollowVisible}
+                                  onOk={this.unFollowHandleOk}
+                                  confirmLoading={confirmLoading}
+                                  onCancel={this.unFollowHandleCancel}
+                                  okText="确认"
+                                  cancelText="取消"
+                           ><p>您确认要取消关注《{item.doc_title}》这篇文献吗？</p>
+                           </Modal>
+                           <Dropdown overlay={this.menu(item.doc_id)}>
+                             <Button style={{ marginLeft: 8 }}>
+                               操作 <Icon type="down"/>
+                             </Button>
+                           </Dropdown>
+                           <Modal title="增加文献到标签"
+                                  visible={addPaperToTagVisible}
+                                  onOk={this.addPaperToTagHandleOk}
+                                  confirmLoading={confirmLoading}
+                                  onCancel={this.addPaperToTagHandleCancel}
+                                  okText="确认"
+                                  cancelText="取消"
+                           >
+                             <p>把文献《{item.doc_title}》增加到以下标签：</p>
+                             <Select
+                               mode="multiple"
+                               style={{ width: '100%' }}
+                               placeholder="请选择标签"
+                               onChange={this.selectHandleChange}
+                             >
+                               {selectTagsChildren}
+                             </Select>
+                           </Modal>
+                         </div>
+                       }>
               <List.Item.Meta
                 /*avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}*/
                 title={item.doc_title}
@@ -120,13 +262,14 @@ class ShowMyFollowPaper extends Component {
           )}
         />
       </div>
-
     );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
+    tags: state.tag.tags,
+    tagNames: state.tag.tagNames,
     paperList: state.paper.papers,
     error: state.paper.error,
     token: state.user.account.token,

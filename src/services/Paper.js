@@ -18,3 +18,23 @@ export const followPaper = ({ payload }) => {
     }
   })
 };
+
+export const unFollowPaper = ({ payload }) => {
+  const { docId, token } = payload;
+  const postUrl = '/api/remove?docId=' + docId;
+
+  return axios.post(postUrl, null, {
+    headers: {
+      'token': token,
+    }
+  })
+};
+
+export const showAllFollowPaper = ({ payload }) => {
+  const { token } = payload;
+  return axios.post('/api/showFollow', null, {
+    headers: {
+      'token': token,
+    }
+  })
+};

@@ -33,6 +33,7 @@ function RouterConfig({ history, app }) {
     models: () => [
       import('./models/User'),
       import('./models/Paper'),
+      import('./models/Tag'),
     ],
     component: () => import('./routes/Dashboard/Dashboard'),
   });
