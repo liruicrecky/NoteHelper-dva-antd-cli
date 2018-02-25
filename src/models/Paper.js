@@ -3,6 +3,8 @@ import {
   followPaper,
   unFollowPaper,
   showAllFollowPaper,
+  fetchPaperComment,
+  commentPaper,
 } from '../services/Paper';
 
 export default {
@@ -10,6 +12,7 @@ export default {
   state:
     {
       papers: [],
+      comments: [],
       error: false,
     },
   subscriptions: {},
@@ -80,6 +83,41 @@ export default {
         }
       }
     },
+
+    // fetch paper comment
+    * fetchPaperComment({ payload }, { call, put }) {
+      const { data } = yield call(fetchPaperComment, { payload });
+      if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'fetchPaperCommentFailed',
+          })
+        } else {
+          yield put({
+            type: 'fetchPaperCommentSuccess',
+            payload: data.result.list,
+          })
+        }
+      }
+    },
+
+    // comment paper
+    * commentPaper({ payload }, { call, put }) {
+      const { data } = yield call(commentPaper, { payload });
+
+      if (data) {
+        if (data.status !== "0001") {
+          yield put({
+            type: 'commentPaperFailed',
+          })
+        } else {
+          yield put({
+            type: 'commentPaperSuccess',
+          })
+        }
+      }
+    },
+
   },
 
   reducers: {
@@ -143,6 +181,37 @@ export default {
         ...state,
         error: false,
         papers: payload,
+      }
+    },
+
+    // fetch paper comment
+    fetchPaperCommentFailed(state) {
+      return {
+        ...state,
+        error: true,
+      }
+    },
+
+    fetchPaperCommentSuccess(state, { payload }) {
+      return {
+        ...state,
+        error: false,
+        comments: payload,
+      }
+    },
+
+    // comment paper
+    commentPaperFailed(state) {
+      return {
+        ...state,
+        error: true,
+      }
+    },
+
+    commentPaperSuccess(state) {
+      return {
+        ...state,
+        error: false,
       }
     },
 

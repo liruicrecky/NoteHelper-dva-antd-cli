@@ -38,3 +38,12 @@ export const showAllFollowPaper = ({ payload }) => {
     }
   })
 };
+
+export const fetchPaperComment = ({ payload }) => {
+  const postUrl = '/api/showComment?docId=' + payload.docId + '&BeginIndex=' + payload.BeginIndex +
+    '&PageSize=' + payload.PageSize;
+
+  return axios.post(postUrl);
+};
+
+export const commentPaper = ({payload}) => axios.post('/api/Comment', payload);

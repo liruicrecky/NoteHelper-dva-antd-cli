@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { List, Button, Spin, Modal, Menu, Dropdown, Icon, Select } from 'antd';
 import { connect } from 'dva';
+import { Link } from 'dva/router';
 
 import styles from './ShowMyFollowPaper.less';
 import { pageSize } from '../../../utils/constant';
@@ -254,7 +255,7 @@ class ShowMyFollowPaper extends Component {
                        }>
               <List.Item.Meta
                 /*avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}*/
-                title={item.doc_title}
+                title={<Link to={"/dashboard/paperDetail/" + item.doc_id}>{item.doc_title}</Link>}
                 description={item.doc_publish + " " + item.doc_author}
               />
               <div>{item.doc_summary}</div>

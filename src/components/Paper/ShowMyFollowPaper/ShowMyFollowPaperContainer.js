@@ -8,19 +8,22 @@ import TagPage from './TagPage';
 
 class ShowAllPaperContainer extends Component {
 
-  render() {
+  state = {
+    tagId: "",
+  };
 
+  render() {
     return (
-     <div className={styles.gutter}>
-       <Row gutter={16}>
-         <Col className={styles["ant-row"]} span={18}>
-           <MyFollowPaper/>
-         </Col>
-         <Col className={styles["ant-row"]} span={6}>
-           <TagPage />
-         </Col>
-       </Row>
-     </div>
+      <div className={styles.gutter}>
+        <Row gutter={16}>
+          <Col className={styles["ant-row"]} span={18}>
+            <MyFollowPaper/>
+          </Col>
+          <Col className={styles["ant-row"]} span={6}>
+            <TagPage/>
+          </Col>
+        </Row>
+      </div>
     );
   }
 }
