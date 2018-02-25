@@ -2,6 +2,8 @@ import { routerRedux } from 'dva/router'
 import {
   auth,
   signUp,
+  fetchDynamicMessageNum,
+  fetchDynamicMessage,
 } from '../services/User';
 import { storageTokenKey } from '../utils/constant';
 import { setLocalStorage, getLocalStorage } from '../utils/helper';
@@ -17,10 +19,12 @@ export default {
         userId: null,
         token: null,
       },
+      dynamicMessageNum: 0,
+      dynamicMessage: [],
       error: false,
     },
   subscriptions: {
-    setup({ dispatch }) {
+    setup({ dispatch, history }) {
       const userData = getLocalStorage(storageTokenKey);
       if (userData) {
         dispatch({
@@ -28,6 +32,14 @@ export default {
           payload: userData,
         })
       }
+
+      history.listen(({ pathname }) => {
+        if (pathname === '/dashboard') {
+          dispatch({
+            type: 'fetchDynamicMessageNum'
+          });
+        }
+      });
     }
   },
   effects: {
@@ -96,6 +108,43 @@ export default {
         }
       }
     },
+
+    // fetch dynamic message numbers
+    * fetchDynamicMessageNum({ payload }, { select, call, put }) {
+      const userId = yield select(state => state.user.account.userId);
+      const { data } = yield call(fetchDynamicMessageNum, { payload: { userId } });
+      if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'fetchDynamicMessageNumFailed',
+          })
+        } else {
+          yield put({
+            type: 'fetchDynamicMessageNumSuccess',
+            payload: data.result.number,
+          })
+        }
+      }
+    },
+
+    // fetch dynamic message numbers
+    * fetchDynamicMessage({ payload }, { call, put }) {
+      const { data } = yield call(fetchDynamicMessage, { payload });
+      console.log("data: ", data);
+      if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'fetchDynamicMessageFailed',
+          })
+        } else {
+          yield put({
+            type: 'fetchDynamicMessageSuccess',
+            payload: data.result.list,
+          })
+        }
+      }
+    },
+
   },
 
   reducers: {
@@ -146,7 +195,39 @@ export default {
         error: true,
         isLogin: false,
       }
-    }
+    },
+
+    // dynamic message numbers
+    fetchDynamicMessageNumSuccess(state, { payload }) {
+      return {
+        ...state,
+        dynamicMessageNum: payload,
+        error: false,
+      }
+    },
+
+    fetchDynamicMessageNumFailed(state) {
+      return {
+        ...state,
+        error: true,
+      }
+    },
+
+    // dynamic message
+    fetchDynamicMessageSuccess(state, { payload }) {
+      return {
+        ...state,
+        dynamicMessage: payload,
+        error: false,
+      }
+    },
+
+    fetchDynamicMessageFailed(state) {
+      return {
+        ...state,
+        error: true,
+      }
+    },
 
   },
 };

@@ -1,6 +1,7 @@
 import {
   addCustomTag,
   fetchCustomTag,
+  fetchTag,
   deleteCustomTag,
   addPaperToTag,
 } from '../services/Tag';
@@ -9,8 +10,10 @@ export default {
   namespace: 'tag',
   state:
     {
-      tags: [],
-      tagNames: [],
+      customTags: [],
+      customTagNames: [],
+      publicTags: [],
+      publicTagNames: [],
       error: false,
     },
   subscriptions: {},
@@ -44,6 +47,24 @@ export default {
         } else {
           yield put({
             type: 'fetchCustomTagSuccess',
+            payload: data.result.list,
+          });
+        }
+      }
+    },
+
+    // fetch tags
+    * fetchTag({ payload }, { call, put }) {
+      const { data } = yield call(fetchTag, { payload });
+      console.log("data: ", data);
+      if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'fetchTagFailed'
+          })
+        } else {
+          yield put({
+            type: 'fetchTagSuccess',
             payload: data.result.list,
           });
         }
@@ -115,18 +136,55 @@ export default {
 
     fetchCustomTagSuccess(state, { payload }) {
 
-      const tags = payload;
-      const tagNames = [];
+      const customTags = payload;
+      const customTagNames = [];
 
-      tags.forEach((v) => {
-        tagNames.push(v.tag_name)
+      customTags.forEach((v) => {
+        customTagNames.push(v.tag_name)
       });
 
       return {
         ...state,
         error: false,
-        tags,
-        tagNames,
+        customTags,
+        customTagNames,
+      };
+    },
+
+    // fetch tags
+    fetchTagFailed(state) {
+      return {
+        ...state,
+        error: true,
+      }
+    },
+
+    fetchTagSuccess(state, { payload }) {
+      const allTags = payload;
+
+      const customTags = [];
+      const customTagNames = [];
+
+      const publicTags = [];
+      const publicTagNames = [];
+
+      allTags.forEach((v) => {
+        if (v.tag_Type === 0) {
+          publicTags.push(v);
+          publicTagNames.push(v.tag_name);
+        } else {
+          customTags.push(v);
+          customTagNames.push(v.tag_name);
+        }
+      });
+
+      return {
+        ...state,
+        error: false,
+        customTags,
+        customTagNames,
+        publicTags,
+        publicTagNames,
       };
     },
 

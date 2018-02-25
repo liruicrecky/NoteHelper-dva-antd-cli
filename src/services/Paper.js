@@ -46,4 +46,10 @@ export const fetchPaperComment = ({ payload }) => {
   return axios.post(postUrl);
 };
 
-export const commentPaper = ({payload}) => axios.post('/api/Comment', payload);
+export const commentPaper = ({ payload }) => axios.post('/api/Comment', payload);
+
+export const addNewPaper = ({ payload }) => axios.post('/api/createDocument', payload, {
+  headers: {
+    'token': payload.token,
+  }
+});

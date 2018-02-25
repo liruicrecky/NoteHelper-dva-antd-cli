@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import { NavLink, withRouter } from 'dva/router';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, Badge } from 'antd';
 import PropTypes from 'prop-types';
 
 import styles from './DashboardLayout.less';
@@ -16,7 +17,7 @@ class SideMenu extends Component {
   };
 
   render() {
-    const { location, name } = this.props;
+    const { location, name, dynamicMessageNum } = this.props;
     return (
       <Sider
         trigger={null}
@@ -27,11 +28,18 @@ class SideMenu extends Component {
         <div className={styles["side-username"]}>
           <span>{name}</span>
         </div>
-
         <Menu mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1">
-            <Icon type="notification"/>
-            <span>动态消息</span>
+          <Menu.Item key="/dashboard/dynamicMessage">
+            <NavLink to="/dashboard/dynamicMessage">
+              <Icon type="notification"/>
+              <Badge
+                count={dynamicMessageNum}
+                showZero={true}
+                offset={[0, 10]}
+              >
+                <span>动态消息</span>
+              </Badge>
+            </NavLink>
           </Menu.Item>
           <Menu.Item key="/dashboard/modifyPersonalInformation">
             <NavLink to="/dashboard/modifyPersonalInformation">
@@ -40,6 +48,12 @@ class SideMenu extends Component {
             </NavLink>
           </Menu.Item>
           <MenuItemGroup key="g1" title="文献管理">
+            <Menu.Item key="/dashboard/uploadPaper">
+              <NavLink to="/dashboard/uploadPaper">
+                <Icon type="file-add"/>
+                <span>新增文献</span>
+              </NavLink>
+            </Menu.Item>
             <Menu.Item key="/dashboard/showAllPaper">
               <NavLink to="/dashboard/showAllPaper">
                 <Icon type="file"/>
@@ -63,4 +77,10 @@ class SideMenu extends Component {
   }
 }
 
-export default withRouter(SideMenu);
+const mapStateToProps = (state) => {
+  return {
+    dynamicMessageNum: state.user.dynamicMessageNum,
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(SideMenu));

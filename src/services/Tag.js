@@ -14,16 +14,18 @@ export const addCustomTag = ({ payload }) => {
   })
 };
 
-export const fetchCustomTag = ({ payload }) => {
+export const fetchCustomTag = ({ payload }) => axios.post('/api/showCustomLabel', null, {
+  headers: {
+    'token': payload.token,
+  }
+});
 
-  const { token } = payload;
+export const fetchTag = ({ payload }) => axios.post('/api/showTaglib', null, {
+  headers: {
+    'token': payload.token,
+  }
+});
 
-  return axios.post('/api/showCustomLabel', null, {
-    headers: {
-      'token': token,
-    }
-  })
-};
 
 export const deleteCustomTag = ({ payload }) => {
 

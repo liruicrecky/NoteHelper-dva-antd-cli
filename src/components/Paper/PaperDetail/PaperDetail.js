@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Row, Col, Divider, List, Button, Spin, Avatar, Input, Collapse, Icon, Rate, Upload, message } from 'antd';
+import {
+  Row, Col, Divider, List, Button, Spin, Avatar, Input, Collapse,
+  Icon, Rate, Upload, message, Tag, Tooltip, Select
+} from 'antd';
 import { connect } from 'dva';
 
 import styles from './PaperDetail.less';
@@ -7,10 +10,12 @@ import { pageSize } from "../../../utils/constant";
 
 const { TextArea } = Input;
 const Panel = Collapse.Panel;
+const Option = Select.Option;
 
 class PaperDetail extends Component {
 
   state = {
+    // comment
     BeginIndex: 0,
     loading: true,
     loadingMore: false,
@@ -19,6 +24,11 @@ class PaperDetail extends Component {
     comments: [],
     paperComment: "",
     rateValue: 3,
+    // tags
+    customTags: [],
+    customTagNames: [],
+    inputVisible: false,
+    inputValue: '',
   };
 
   // load data at first time
@@ -42,6 +52,22 @@ class PaperDetail extends Component {
           BeginIndex,
           loading: false,
           comments: this.props.comments,
+        })
+      });
+
+    // get tags
+    const data = {
+      token: this.props.account.token,
+    };
+
+    this.props.dispatch({ type: 'tag/fetchCustomTag', payload: data })
+      .then(() => {
+        const customTags = this.props.customTags;
+        const customTagNames = this.props.customTagNames;
+
+        this.setState({
+          customTags,
+          customTagNames,
         })
       });
   }
@@ -80,9 +106,72 @@ class PaperDetail extends Component {
     this.setState({ rateValue });
   };
 
+  // tags
+  tagHandleClose = (removedTagName) => {
+
+    const removeTag = this.state.customTags.find(v => v.tag_name === removedTagName);
+    const data = {
+      tagId: removeTag.tag_id,
+      token: this.props.token,
+    };
+
+    const customTagNames = this.state.customTagNames.filter(tag => tag !== removedTagName);
+    const customTags = this.state.customTags.filter(tag => tag.tag_name !== removedTagName);
+
+    this.props.dispatch({ type: 'tag/deleteCustomTag', payload: data })
+      .then(() => {
+
+      });
+
+    this.setState({ customTagNames, customTags });
+  };
+
+  tagShowInput = () => {
+    this.setState({ inputVisible: true }, () => this.input.focus());
+  };
+
+  tagHandleInputChange = (e) => {
+    this.setState({ inputValue: e.target.value });
+  };
+
+  tagHandleInputConfirm = () => {
+    const state = this.state;
+    const inputValue = state.inputValue;
+    let customTagNames = state.customTagNames;
+    if (inputValue && customTagNames.indexOf(inputValue) === -1) {
+      customTagNames = [...customTagNames, inputValue];
+    }
+
+    const data = {
+      tagName: inputValue,
+      token: this.props.token,
+    };
+
+    this.props.dispatch({
+      type: 'tag/addCustomTag',
+      payload: data,
+    }).then(() =>
+      this.setState({
+        customTagNames,
+        inputVisible: false,
+        inputValue: '',
+      }))
+
+  };
+
+  tagSaveInputRef = input => this.input = input;
+
+  // select
+  selectHandleChange = (value) => {
+    console.log(`selected ${value}`);
+  };
+
   render() {
 
     const { loading, loadingMore, showLoadingMore, comments, rateValue } = this.state;
+
+    // tags
+    const { inputVisible, inputValue, customTagNames } = this.state;
 
     const loadMore = showLoadingMore ? (
       <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
@@ -109,6 +198,13 @@ class PaperDetail extends Component {
       },
     };
 
+    const IconText = ({ type, text }) => (
+      <span>
+        <Icon type={type} style={{ marginRight: 8 }}/>
+          {text}
+      </span>
+    );
+
     return (
       <div className={styles.gutter}>
         <Row gutter={18}>
@@ -123,9 +219,9 @@ class PaperDetail extends Component {
             </Row>
             <Row>
               <Divider/>
-              <div>评论</div>
 
               <List
+                header={<div className={styles}>评论</div>}
                 className={styles["loadmore-list"]}
                 loading={loading}
                 itemLayout="vertical"
@@ -133,13 +229,16 @@ class PaperDetail extends Component {
                 dataSource={comments}
                 size="small"
                 renderItem={item => (
-                  <List.Item key={item.user_id}>
+                  <List.Item
+                    key={item.user_id}
+                    actions={[<IconText type="delete" text="删除"/>]}
+                  >
                     <List.Item.Meta
-                      avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
+                      /*avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}*/
                       title={item.name}
-                      description={item.m_content}
+                      description={this.getTime(item.m_time)}
                     />
-                    <div>{this.getTime(item.m_time)}</div>
+                    {item.m_content}
                   </List.Item>
                 )}
               />
@@ -189,7 +288,50 @@ class PaperDetail extends Component {
 
               </Panel>
               <Panel header="标签" key="2">
-                <p>tag</p>
+
+                <div>
+                  {customTagNames.map((tag, index) => {
+                    const isLongTag = tag.length > 20;
+                    const tagElem = (
+                      <Tag key={tag} closable={true} style={{ marginBottom: "5px" }}
+                           afterClose={() => this.tagHandleClose(tag)}>
+                        {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+                      </Tag>
+                    );
+                    return isLongTag ? <Tooltip title={tag} key={tag}>{tagElem}</Tooltip> : tagElem;
+                  })}
+                  {inputVisible && (
+                    <Input
+                      ref={this.tagSaveInputRef}
+                      type="text"
+                      size="small"
+                      style={{ width: 78 }}
+                      value={inputValue}
+                      onChange={this.tagHandleInputChange}
+                      onBlur={this.tagHandleInputConfirm}
+                      onPressEnter={this.tagHandleInputConfirm}
+                    />
+                  )}
+                  {!inputVisible && (
+                    <Tag
+                      onClick={this.tagShowInput}
+                      style={{ background: '#fff', borderStyle: 'dashed' }}
+                    >
+                      <Icon type="plus"/> 新标签
+                    </Tag>
+                  )}
+                </div>
+
+                <Select
+                  mode="tags"
+                  style={{ width: '100%' }}
+                  placeholder="Tags Mode"
+                  onChange={this.selectHandleChange}
+                >
+
+                </Select>
+
+
               </Panel>
             </Collapse>
 
@@ -202,6 +344,8 @@ class PaperDetail extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    customTags: state.tag.customTags,
+    customTagNames: state.tag.customTagNames,
     comments: state.paper.comments,
     error: state.paper.error,
     account: state.user.account,

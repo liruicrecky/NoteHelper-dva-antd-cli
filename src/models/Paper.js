@@ -5,7 +5,9 @@ import {
   showAllFollowPaper,
   fetchPaperComment,
   commentPaper,
+  addNewPaper,
 } from '../services/Paper';
+import { routerRedux } from "dva/router";
 
 export default {
   namespace: 'paper',
@@ -113,7 +115,26 @@ export default {
         } else {
           yield put({
             type: 'commentPaperSuccess',
+
           })
+        }
+      }
+    },
+
+    // add new paper
+    * addNewPaper({ payload }, { call, put }) {
+      const { data } = yield call(addNewPaper, { payload });
+      console.log("data: ", data);
+      if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'addNewPaperFailed',
+          })
+        } else {
+          yield put({
+            type: 'addNewPaperSuccess',
+          });
+          yield put(routerRedux.push('/dashboard'));
         }
       }
     },
@@ -209,6 +230,21 @@ export default {
     },
 
     commentPaperSuccess(state) {
+      return {
+        ...state,
+        error: false,
+      }
+    },
+
+    // add new paper
+    addNewPaperFailed(state) {
+      return {
+        ...state,
+        error: true,
+      }
+    },
+
+    addNewPaperSuccess(state) {
       return {
         ...state,
         error: false,

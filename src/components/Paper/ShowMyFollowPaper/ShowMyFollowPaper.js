@@ -33,9 +33,9 @@ class ShowMyFollowPaper extends Component {
       .then(() => {
 
         // select tag
-        const tagNames = this.props.tagNames;
+        const customTagNames = this.props.customTagNames;
         const selectTagsChildren = [];
-        tagNames.forEach((v) => {
+        customTagNames.forEach((v) => {
           selectTagsChildren.push(<Option key={v}>{v}</Option>);
         });
 
@@ -158,8 +158,8 @@ class ShowMyFollowPaper extends Component {
   addPaperToTagHandleOk = () => {
 
     const paperId = this.state.docId;
-    const tags = this.props.tags;
-    const tag = tags.find((v) => v.tag_name === this.state.selectTags[0]);
+    const customTags = this.props.customTags;
+    const tag = customTags.find((v) => v.tag_name === this.state.selectTags[0]);
 
     this.addPaperToTag(paperId, tag.tag_id);
     this.setState({
@@ -269,8 +269,8 @@ class ShowMyFollowPaper extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    tags: state.tag.tags,
-    tagNames: state.tag.tagNames,
+    customTags: state.tag.customTags,
+    customTagNames: state.tag.customTagNames,
     paperList: state.paper.papers,
     error: state.paper.error,
     token: state.user.account.token,

@@ -4,8 +4,8 @@ import { Tag, Input, Tooltip, Icon, Divider } from 'antd';
 
 class TagPage extends Component {
   state = {
-    tags: [],
-    tagsList: [],
+    customTags: [],
+    customTagNames: [],
     inputVisible: false,
     inputValue: '',
   };
@@ -18,37 +18,37 @@ class TagPage extends Component {
 
     this.props.dispatch({ type: 'tag/fetchCustomTag', payload: data })
       .then(() => {
-        const tagsList = this.props.tagList;
-        const tags = this.props.tags;
+        const customTags = this.props.customTags;
+        const customTagNames = this.props.customTagNames;
         //
         // tagsList.forEach((v) => {
         //   tags.push(v.tag_name)
         // });
 
         this.setState({
-          tags,
-          tagsList,
+          customTags,
+          customTagNames,
         })
       });
   }
 
   handleClose = (removedTagName) => {
 
-    const removeTag = this.state.tagsList.find(v => v.tag_name === removedTagName);
+    const removeTag = this.state.customTags.find(v => v.tag_name === removedTagName);
     const data = {
       tagId: removeTag.tag_id,
       token: this.props.token,
     };
 
-    const tags = this.state.tags.filter(tag => tag !== removedTagName);
-    const tagsList = this.state.tagsList.filter(tag => tag.tag_name !== removedTagName);
+    const customTagNames = this.state.customTagNames.filter(tag => tag !== removedTagName);
+    const customTags = this.state.customTags.filter(tag => tag.tag_name !== removedTagName);
 
     this.props.dispatch({ type: 'tag/deleteCustomTag', payload: data })
       .then(() => {
 
       });
 
-    this.setState({ tags, tagsList });
+    this.setState({ customTagNames, customTags });
   };
 
   showInput = () => {
@@ -62,9 +62,9 @@ class TagPage extends Component {
   handleInputConfirm = () => {
     const state = this.state;
     const inputValue = state.inputValue;
-    let tags = state.tags;
-    if (inputValue && tags.indexOf(inputValue) === -1) {
-      tags = [...tags, inputValue];
+    let customTagNames = state.customTagNames;
+    if (inputValue && customTagNames.indexOf(inputValue) === -1) {
+      customTagNames = [...customTagNames, inputValue];
     }
 
     const data = {
@@ -77,7 +77,7 @@ class TagPage extends Component {
       payload: data,
     }).then(() =>
       this.setState({
-        tags,
+        customTagNames,
         inputVisible: false,
         inputValue: '',
       }))
@@ -87,13 +87,13 @@ class TagPage extends Component {
   saveInputRef = input => this.input = input;
 
   render() {
-    const { tags, inputVisible, inputValue } = this.state;
+    const { customTagNames, inputVisible, inputValue } = this.state;
     return (
       <div>
         <span style={{ fontSize: '16px' }}>标签</span>
         <Divider style={{ marginTop: "1px", marginBottom: "5px" }}/>
         <div>
-          {tags.map((tag, index) => {
+          {customTagNames.map((tag, index) => {
             const isLongTag = tag.length > 20;
             const tagElem = (
               <Tag key={tag} closable={true} style={{ marginBottom: "5px" }}
@@ -131,8 +131,8 @@ class TagPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    tagsList: state.tag.tags,
-    tags: state.tag.tagNames,
+    customTags: state.tag.customTags,
+    customTagNames: state.tag.customTagNames,
     token: state.user.account.token,
   };
 };
