@@ -68,7 +68,7 @@ class SideMenu extends Component {
             </Menu.Item>
             <Menu.Item key="4">
               <Icon type="upload"/>
-              <span>我上传的论文</span>
+              <span>我创建的论文</span>
             </Menu.Item>
           </MenuItemGroup>
         </Menu>

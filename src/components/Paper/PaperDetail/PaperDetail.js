@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import {
-  Row, Col, Divider, List, Button, Spin, Avatar, Input, Collapse,
+  Row, Col, Divider, Button, Spin, Input, Collapse,
   Icon, Rate, Upload, message, Tag, Tooltip, Select
 } from 'antd';
 import { connect } from 'dva';
 
 import styles from './PaperDetail.less';
+import PaperComment from './PaperComment';
 import { pageSize } from "../../../utils/constant";
 
 const { TextArea } = Input;
@@ -23,6 +24,7 @@ class PaperDetail extends Component {
     paperId: "",
     comments: [],
     paperComment: "",
+    // rate
     rateValue: 3,
     // tags
     customTags: [],
@@ -79,7 +81,7 @@ class PaperDetail extends Component {
     return newDate.toLocaleString();
   };
 
-  // comment
+  // comment function
   textAreaOnChange = (e) => {
     this.setState({
       paperComment: e.target.value,
@@ -99,6 +101,70 @@ class PaperDetail extends Component {
     }).then(() => {
       const newComment = {}
     })
+  };
+
+  getData = () => {
+    const values = {
+      BeginIndex: this.state.BeginIndex,
+      PageSize: pageSize,
+      docId: this.state.paperId,
+    };
+
+    this.props.dispatch({ type: 'paper/fetchPaperComment', payload: values })
+      .then(() => {
+        let BeginIndex = this.state.BeginIndex + pageSize;
+        let comments = this.state.comments;
+        this.props.comments.forEach((v) => {
+          comments.push(v)
+        });
+        this.setState({
+          BeginIndex,
+          loadingMore: false,
+          comments,
+        })
+      });
+  };
+
+  onLoadMore = () => {
+    this.setState({
+      loadingMore: true,
+    });
+    this.getData(() => {
+      this.setState({}, () => {
+        // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
+        // In real scene, you can using public method of react-virtualized:
+        // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
+        window.dispatchEvent(new Event('resize'));
+      });
+    });
+  };
+
+  deleteComment = (commendId, e) => {
+    e.preventDefault();
+    const userId = this.props.account.userId;
+    const userCommentId = this.state.comments.find((v) => v.m_id === commendId);
+
+    if (userId !== userCommentId.user_id) {
+      message.error("不能删除不是自己的评论哟！  :)")
+    } else {
+      const data = {
+        m_id: commendId,
+        token: this.props.account.token,
+      };
+      this.props.dispatch({
+        type: 'paper/deletePaperComment',
+        payload: data
+      }).then(() => {
+        if (this.props.error) {
+          message.error("未知原因删除失败了！  :)")
+        } else {
+          const comments = this.state.comments.filter(comment => comment.m_id !== commendId);
+          this.setState({
+            comments
+          })
+        }
+      })
+    }
   };
 
   // rate
@@ -168,10 +234,15 @@ class PaperDetail extends Component {
 
   render() {
 
-    const { loading, loadingMore, showLoadingMore, comments, rateValue } = this.state;
+    // comment
+    const { loading, comments, loadingMore, showLoadingMore, rateValue } = this.state;
+    const commentState = {
+      loading,
+      comments,
+    };
 
-    // tags
-    const { inputVisible, inputValue, customTagNames } = this.state;
+    const { inputVisible, inputValue, customTagNames, paperId } = this.state;
+    const { token } = this.props.account.token;
 
     const loadMore = showLoadingMore ? (
       <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
@@ -180,6 +251,7 @@ class PaperDetail extends Component {
       </div>
     ) : null;
 
+    // right
     const uploadProps = {
       name: 'file',
       action: '/api/uploadDoc?docId=' + this.state.paperId,
@@ -198,13 +270,6 @@ class PaperDetail extends Component {
       },
     };
 
-    const IconText = ({ type, text }) => (
-      <span>
-        <Icon type={type} style={{ marginRight: 8 }}/>
-          {text}
-      </span>
-    );
-
     return (
       <div className={styles.gutter}>
         <Row gutter={18}>
@@ -220,44 +285,19 @@ class PaperDetail extends Component {
             <Row>
               <Divider/>
 
-              <List
-                header={<div className={styles}>评论</div>}
-                className={styles["loadmore-list"]}
-                loading={loading}
-                itemLayout="vertical"
+              <PaperComment
+                {...commentState}
                 loadMore={loadMore}
-                dataSource={comments}
-                size="small"
-                renderItem={item => (
-                  <List.Item
-                    key={item.user_id}
-                    actions={[<IconText type="delete" text="删除"/>]}
-                  >
-                    <List.Item.Meta
-                      /*avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}*/
-                      title={item.name}
-                      description={this.getTime(item.m_time)}
-                    />
-                    {item.m_content}
-                  </List.Item>
-                )}
+                onHandleCommentPost={this.onHandleCommentPost}
+                textAreaOnChange={this.textAreaOnChange}
+                deleteComment={this.deleteComment}
               />
-              <TextArea
-                autosize={{ minRows: 5 }}
-                placeholder="评论一下吧！"
-                onChange={this.textAreaOnChange}
-              />
-              <Button
-                type="primary"
-                className={styles["button-post"]}
-                onClick={this.onHandleCommentPost.bind(this)}
-              >
-                评论</Button>
 
             </Row>
           </Col>
           <Col className={styles["ant-row"]} span={6}>
             <Collapse bordered={true} defaultActiveKey={['1', '2']}>
+
               <Panel header="关于" key="1">
                 <div>
                   <Button type="primary" size="small">
@@ -287,6 +327,7 @@ class PaperDetail extends Component {
                 </div>
 
               </Panel>
+
               <Panel header="标签" key="2">
 
                 <div>

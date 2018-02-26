@@ -111,18 +111,24 @@ export default {
 
     // fetch dynamic message numbers
     * fetchDynamicMessageNum({ payload }, { select, call, put }) {
-      const userId = yield select(state => state.user.account.userId);
-      const { data } = yield call(fetchDynamicMessageNum, { payload: { userId } });
-      if (data) {
-        if (data.status !== "1") {
-          yield put({
-            type: 'fetchDynamicMessageNumFailed',
-          })
-        } else {
-          yield put({
-            type: 'fetchDynamicMessageNumSuccess',
-            payload: data.result.number,
-          })
+      const isLogin = yield select(state => state.user.isLogin);
+      // if not login
+      if (!isLogin) {
+        yield put(routerRedux.push('/login'));
+      } else {
+        const userId = yield select(state => state.user.account.userId);
+        const { data } = yield call(fetchDynamicMessageNum, { payload: { userId } });
+        if (data) {
+          if (data.status !== "1") {
+            yield put({
+              type: 'fetchDynamicMessageNumFailed',
+            })
+          } else {
+            yield put({
+              type: 'fetchDynamicMessageNumSuccess',
+              payload: data.result.number,
+            })
+          }
         }
       }
     },

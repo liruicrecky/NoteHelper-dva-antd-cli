@@ -4,6 +4,7 @@ import {
   unFollowPaper,
   showAllFollowPaper,
   fetchPaperComment,
+  deletePaperComment,
   commentPaper,
   addNewPaper,
 } from '../services/Paper';
@@ -121,6 +122,23 @@ export default {
       }
     },
 
+    // delete paper comment
+    * deletePaperComment({ payload }, { call, put }) {
+      const { data } = yield call(deletePaperComment, { payload });
+      if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'deletePaperCommentFailed',
+          })
+        } else {
+          yield put({
+            type: 'deletePaperCommentSuccess',
+
+          })
+        }
+      }
+    },
+
     // add new paper
     * addNewPaper({ payload }, { call, put }) {
       const { data } = yield call(addNewPaper, { payload });
@@ -230,6 +248,21 @@ export default {
     },
 
     commentPaperSuccess(state) {
+      return {
+        ...state,
+        error: false,
+      }
+    },
+
+    // delete paper comment
+    deletePaperCommentFailed(state) {
+      return {
+        ...state,
+        error: true,
+      }
+    },
+
+    deletePaperCommentSuccess(state) {
       return {
         ...state,
         error: false,
