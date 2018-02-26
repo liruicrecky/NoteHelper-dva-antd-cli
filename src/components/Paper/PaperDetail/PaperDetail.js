@@ -362,17 +362,13 @@ class PaperDetail extends Component {
                     </Tag>
                   )}
                 </div>
-
                 <Select
                   mode="tags"
                   style={{ width: '100%' }}
                   placeholder="Tags Mode"
                   onChange={this.selectHandleChange}
                 >
-
                 </Select>
-
-
               </Panel>
             </Collapse>
 

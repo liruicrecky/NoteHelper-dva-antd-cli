@@ -31,6 +31,10 @@ class DynamicMessage extends Component {
         })
       })
     }
+
+    this.setState({
+      loading: false,
+    })
   }
 
   // load more

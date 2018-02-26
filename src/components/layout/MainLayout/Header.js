@@ -3,7 +3,8 @@ import { connect } from 'dva';
 import { Menu, Button, Icon, Tooltip, Row, Col } from 'antd';
 import { Link } from 'dva/router';
 
-import style from './Header.less'
+import style from './Header.less';
+import Logo from '../../../assets/logo.png';
 
 
 const Header = ({ location, loading, dispatch, isLogin, account }) => {
@@ -13,56 +14,72 @@ const Header = ({ location, loading, dispatch, isLogin, account }) => {
     dispatch({ type: 'user/logout' });
   };
 
-  const login = username => {
+  const notLogin = () => {
     return (
-      <div>
-        <Link to="/dashboard">
-          <Tooltip title="我的主页">
-            <Icon type="dashboard" style={{ fontSize: 20, color: 'rgba(0,0,0,.25)', marginRight: '1vw' }}/>
-            <span style={{ marginRight: '1vw', color: 'rgba(0,0,0,.25)' }}>我的主页</span>
-          </Tooltip>
-        </Link>
-        <div className={style.user}>
-                <span>您好, <em className={style.username}>{username} !</em>
-            </span>
-          <Button icon="logout" type="primary" loading={loading} size="small"
-                  onClick={handleClickLogOut}>注销</Button>
-        </div>
-      </div>
+      <Menu
+        mode="horizontal"
+        className={style["menu"]}
+      >
+        <Menu.Item key="login">
+          <Link to="/login">
+            <Button className={style["margin-right"]}>立即登录</Button>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="signUp">
+          <Link to="/signUp">
+            <Button type="primary">免费注册</Button>
+          </Link>
+        </Menu.Item>
+      </Menu>
     )
   };
 
-  const notLogin = () => {
+  const login = () => {
     return (
-      <div>
-        <Link to="/login">
-          <Button className={style["margin-right"]}>立即登录</Button>
-        </Link>
-
-        <Link to="/signUp">
-          <Button type="primary">免费注册</Button>
-        </Link>
-      </div>
+      <Menu
+        mode="horizontal"
+        className={style["menu"]}
+      >
+        <Menu.Item key="/dashboard">
+          <Link to="/dashboard">
+            <Tooltip title="我的主页">
+              <Icon type="dashboard" style={{ fontSize: 20, color: 'rgba(0,0,0,.25)', marginRight: '1vw' }}/>
+              <span style={{ marginRight: '1vw', color: 'rgba(0,0,0,.25)' }}>我的主页</span>
+            </Tooltip>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="/logout">
+          <div className={style.user}>
+            <span>您好, <em className={style.username}>{account.name} !</em></span>
+            <Button icon="logout" type="primary" loading={loading} size="small"
+                    onClick={handleClickLogOut}>注销</Button>
+          </div>
+        </Menu.Item>
+      </Menu>
     )
+  };
+
+  const logoImg = {
+    backgroundImage: 'url(' + Logo + ')',
+    backgroundSize: '100% 100%',
   };
 
   return (
     <div>
       <Row>
-        <Col span={16}>
+        <Col span={3}>
+          <div className={style.logo} style={logoImg}/>
+        </Col>
+        <Col span={13}>
           <Menu
             mode="horizontal"
             className={style["menu"]}
           >
-            <Menu.Item key="/"><Link to="/">Home</Link></Menu.Item>
-            <Menu.Item key="archive"><Link to="archive">Archive</Link></Menu.Item>
-            <Menu.Item key="about"><Link to="about">About me</Link></Menu.Item>
+            <Menu.Item key="/"><Link to="/">主页</Link></Menu.Item>
           </Menu>
         </Col>
         <Col span={8}>
-          <div className={style.right}>
-            {isLogin ? login(account.name) : notLogin()}
-          </div>
+          {isLogin ? login() : notLogin()}
         </Col>
       </Row>
     </div>

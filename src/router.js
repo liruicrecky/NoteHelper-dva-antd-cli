@@ -8,6 +8,7 @@ function RouterConfig({ history, app }) {
     app,
     models: () => [
       import('./models/User'),
+      import('./models/Paper'),
     ],
     component: () => import('./routes/IndexPage'),
   });

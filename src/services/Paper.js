@@ -62,3 +62,12 @@ export const addNewPaper = ({ payload }) => axios.post('/api/createDocument', pa
     'token': payload.token,
   }
 });
+
+export const searchPaperByKeyword = ({ payload }) => {
+  const postUrl = '/api/searchByKeywords?text=' + payload.keyword;
+  return axios.post(postUrl, null, {
+    headers: {
+      'token': payload.token,
+    }
+  })
+};

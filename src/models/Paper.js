@@ -7,6 +7,7 @@ import {
   deletePaperComment,
   commentPaper,
   addNewPaper,
+  searchPaperByKeyword,
 } from '../services/Paper';
 import { routerRedux } from "dva/router";
 
@@ -157,6 +158,24 @@ export default {
       }
     },
 
+    // search paper use keyword
+    * searchPaperByKeyword({ payload }, { call, put }) {
+      const { data } = yield call(searchPaperByKeyword, { payload });
+      console.log("data: ", data);
+      if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'searchPaperByKeywordFailed',
+          })
+        } else {
+          yield put({
+            type: 'searchPaperByKeywordSuccess',
+            payload: data.result.list,
+          });
+        }
+      }
+    },
+
   },
 
   reducers: {
@@ -281,6 +300,40 @@ export default {
       return {
         ...state,
         error: false,
+      }
+    },
+
+    // search paper use keyword
+    searchPaperByKeywordFailed(state) {
+      return {
+        ...state,
+        error: true,
+      }
+    },
+
+    searchPaperByKeywordSuccess(state, { payload }) {
+
+      const txt = payload.txt;
+      const doc = payload.doc;
+
+      const papers = [];
+
+      if (txt.length > 0) {
+        txt.forEach((v) => {
+          papers.push(v)
+        })
+      }
+
+      if (doc.length > 0) {
+        doc.forEach((v) => {
+          papers.push(v)
+        })
+      }
+
+      return {
+        ...state,
+        error: false,
+        papers,
       }
     },
 
