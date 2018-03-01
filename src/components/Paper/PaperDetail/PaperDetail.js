@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import {
   Row, Col, Divider, Button, Spin, Input, Collapse,
-  Icon, Rate, Upload, message, Tag, Tooltip, Select
+  Icon, Rate, Upload, message, Tag, Tooltip, Select, Modal
 } from 'antd';
+import { Document, Page } from 'react-pdf';
 import { connect } from 'dva';
+
+import testPDF from '/home/akka/Code/upload/1745-6215-12-1.pdf';
 
 import styles from './PaperDetail.less';
 import PaperComment from './PaperComment';
@@ -31,6 +34,11 @@ class PaperDetail extends Component {
     customTagNames: [],
     inputVisible: false,
     inputValue: '',
+    // pdf
+    numPages: null,
+    pageNumber: 1,
+    visible: false,
+    paperPDF: "",
   };
 
   // load data at first time
@@ -232,6 +240,56 @@ class PaperDetail extends Component {
     console.log(`selected ${value}`);
   };
 
+  // pdf
+  onDocumentLoad = ({ numPages }) => {
+    this.setState({ numPages });
+  };
+  onChangePageNumber = () => {
+    const pageNumber = this.state.pageNumber + 1;
+    this.setState({
+      pageNumber
+    })
+  };
+
+  // show pdf
+  showModalPDF = () => {
+    this.setState({
+      visible: true,
+    });
+
+    // get pdf
+    const dataPDF = {
+      token: this.props.account.token,
+      docId: this.state.paperId,
+    };
+    this.props.dispatch(
+      {
+        type: 'paper/getPaperPDF',
+        payload: dataPDF,
+      }
+    ).then(() => {
+      this.setState({
+        paperPDF: this.props.paperPDF,
+      })
+    })
+
+  };
+
+  handleOkPDF = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
+  handleCancelPDF = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
+
   render() {
 
     // comment
@@ -270,17 +328,47 @@ class PaperDetail extends Component {
       },
     };
 
+    // pdf
+    const { pageNumber, numPages, visible,paperPDF } = this.state;
+
     return (
       <div className={styles.gutter}>
         <Row gutter={18}>
           <Col className={styles["ant-row"]} span={18}>
             <Row>
-              <div>Nano-sized transition-metal oxides as negative-electrode materials for lithium-ion batteries</div>
-              <Divider/>
-              <div><p>摘要</p></div>
-              <div>Rechargeable solid-state batteries have long been considered an attractive power source for a
-                wide variety of applications, and in particular, lithium-ion batteries are emerging as the
-              </div>
+              <Col span={20}>
+                <div>Nano-sized transition-metal oxides as negative-electrode materials for lithium-ion batteries</div>
+                <Divider/>
+                <div><p>摘要</p></div>
+                <div>Rechargeable solid-state batteries have long been considered an attractive power source for a
+                  wide variety of applications, and in particular, lithium-ion batteries are emerging as the
+                </div>
+              </Col>
+
+              <Col span={4}>
+                <div>
+                  <Button type="primary" onClick={this.showModalPDF}>Open</Button>
+                  <Modal
+                    visible={visible}
+                    onOk={this.handleOkPDF}
+                    onCancel={this.handleCancelPDF}
+                    okText="关闭"
+                    cancelText=""
+                    destroyOnClose={true}
+                    width= "50vw"
+                  >
+                    <Document
+                      file={testPDF}
+                      onLoadSuccess={this.onDocumentLoad}
+                    >
+                      <Page pageNumber={pageNumber}/>
+                    </Document>
+                    <p>第 {pageNumber} 页，共 {numPages} 页</p>
+                    <Button onClick={this.onChangePageNumber}>下一页</Button>
+                  </Modal>
+                </div>
+
+              </Col>
             </Row>
             <Row>
               <Divider/>
@@ -384,6 +472,7 @@ const mapStateToProps = (state) => {
     customTags: state.tag.customTags,
     customTagNames: state.tag.customTagNames,
     comments: state.paper.comments,
+    paperPDF: state.paper.paperPDF,
     error: state.paper.error,
     account: state.user.account,
   };

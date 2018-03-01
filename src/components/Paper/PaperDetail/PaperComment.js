@@ -4,17 +4,11 @@ import {
 } from 'antd';
 
 import styles from './PaperDetail.less';
-import getTime from '../../../utils/helper';
+import {getTime} from '../../../utils/helper';
 
 const { TextArea } = Input;
 
 class PaperComment extends Component {
-
-  getTime = (time) => {
-    const newDate = new Date();
-    newDate.setTime(time * 1000);
-    return newDate.toLocaleString();
-  };
 
   render() {
 
@@ -51,7 +45,7 @@ class PaperComment extends Component {
               <List.Item.Meta
                 /*avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}*/
                 title={item.name}
-                description={this.getTime(item.m_time)}
+                description={getTime(item.m_time)}
               />
               {item.m_content}
             </List.Item>
