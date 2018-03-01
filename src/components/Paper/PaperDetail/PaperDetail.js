@@ -12,9 +12,7 @@ import styles from './PaperDetail.less';
 import PaperComment from './PaperComment';
 import { pageSize } from "../../../utils/constant";
 
-const { TextArea } = Input;
 const Panel = Collapse.Panel;
-const Option = Select.Option;
 
 class PaperDetail extends Component {
 
@@ -107,7 +105,7 @@ class PaperDetail extends Component {
       type: 'paper/commentPaper',
       payload: data,
     }).then(() => {
-      const newComment = {}
+
     })
   };
 
@@ -299,8 +297,7 @@ class PaperDetail extends Component {
       comments,
     };
 
-    const { inputVisible, inputValue, customTagNames, paperId } = this.state;
-    const { token } = this.props.account.token;
+    const { inputVisible, inputValue, customTagNames } = this.state;
 
     const loadMore = showLoadingMore ? (
       <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
@@ -329,7 +326,7 @@ class PaperDetail extends Component {
     };
 
     // pdf
-    const { pageNumber, numPages, visible,paperPDF } = this.state;
+    const { pageNumber, numPages, visible } = this.state;
 
     return (
       <div className={styles.gutter}>

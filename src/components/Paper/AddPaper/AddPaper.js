@@ -68,8 +68,8 @@ class AddPaper extends Component {
 
   render() {
 
-    const { loading, error, dispatch, token } = this.props;
-    const { form: { getFieldDecorator, validateFieldsAndScroll, getFieldValue } } = this.props;
+    const { loading, error } = this.props;
+    const { form: { getFieldDecorator } } = this.props;
 
     const { selectTagsChildren } = this.state;
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, Button, Spin, message } from 'antd';
+import { List, Button, Spin } from 'antd';
 import { connect } from 'dva';
 
 import styles from './ShowAllPaper.less';

@@ -17,7 +17,8 @@ class SideMenu extends Component {
   };
 
   render() {
-    const { location, name, dynamicMessageNum } = this.props;
+    // LOCATION
+    const { name, dynamicMessageNum } = this.props;
     return (
       <Sider
         trigger={null}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, Button, Spin, message } from 'antd';
+import { List, Button, Spin } from 'antd';
 import { connect } from 'dva';
 
 import styles from './DynamicMessage.less';
@@ -17,13 +17,13 @@ class DynamicMessage extends Component {
   componentDidMount() {
 
     const dMessageNum = this.props.dynamicMessageNum;
-    if(dMessageNum !== 0){
+    if (dMessageNum !== 0) {
       const data = {
-        userId : this.props.userId,
+        userId: this.props.userId,
       };
 
       this.props.dispatch({
-        type:'user/fetchDynamicMessage',
+        type: 'user/fetchDynamicMessage',
         payload: data,
       }).then(() => {
         this.setState({
@@ -81,7 +81,7 @@ class DynamicMessage extends Component {
 
   render() {
     const { loading, loadingMore, showLoadingMore } = this.state;
-    const {dynamicMessage} = this.props;
+    const { dynamicMessage } = this.props;
 
     const loadMore = showLoadingMore ? (
       <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
