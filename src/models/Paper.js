@@ -8,6 +8,7 @@ import {
   commentPaper,
   addNewPaper,
   searchPaperByKeyword,
+  fetchPaperByTag,
 } from '../services/Paper';
 import { routerRedux } from "dva/router";
 
@@ -34,6 +35,24 @@ export default {
           yield put({
             type: 'getAllPapersSuccess',
             payload: data.result,
+          });
+        }
+      }
+    },
+
+    // fetch paper by tag
+    * fetchPaperByTag({ payload }, { call, put }) {
+      const { data } = yield call(fetchPaperByTag, { payload });
+      console.log("data: ", data);
+      if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'fetchPaperByTagFailed'
+          })
+        } else {
+          yield put({
+            type: 'fetchPaperByTagSuccess',
+            payload: data.result.list,
           });
         }
       }
@@ -193,6 +212,22 @@ export default {
         ...state,
         error: false,
         papers: payload.Document,
+      };
+    },
+
+    // fetch paper by tag
+    fetchPaperByTagFailed(state) {
+      return {
+        ...state,
+        error: true,
+      }
+    },
+
+    fetchPaperByTagSuccess(state, { payload }) {
+      return {
+        ...state,
+        error: false,
+        papers: payload,
       };
     },
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   Row, Col, Divider, Button, Spin, Input, Collapse,
-  Icon, Rate, Upload, message, Tag, Tooltip, Select, Modal
+  Icon, Rate, Upload, message, Tag, Tooltip, Modal
 } from 'antd';
 import { Document, Page } from 'react-pdf';
 import { connect } from 'dva';
@@ -238,6 +238,7 @@ class PaperDetail extends Component {
     console.log(`selected ${value}`);
   };
 
+
   // pdf
   onDocumentLoad = ({ numPages }) => {
     this.setState({ numPages });
@@ -260,16 +261,15 @@ class PaperDetail extends Component {
       token: this.props.account.token,
       docId: this.state.paperId,
     };
-    this.props.dispatch(
-      {
-        type: 'paper/getPaperPDF',
-        payload: dataPDF,
-      }
-    ).then(() => {
-      this.setState({
-        paperPDF: this.props.paperPDF,
-      })
+    this.props.dispatch({
+      type: 'paper/getPaperPDF',
+      payload: dataPDF,
     })
+    //   .then(() => {
+    //   // this.setState({
+    //   //   paperPDF: this.props.paperPDF,
+    //   // })
+    // })
 
   };
 
@@ -296,6 +296,8 @@ class PaperDetail extends Component {
       loading,
       comments,
     };
+
+    // tags
 
     const { inputVisible, inputValue, customTagNames } = this.state;
 
@@ -344,7 +346,7 @@ class PaperDetail extends Component {
 
               <Col span={4}>
                 <div>
-                  <Button type="primary" onClick={this.showModalPDF}>Open</Button>
+                  <Button type="primary" onClick={this.showModalPDF}>浏览文献</Button>
                   <Modal
                     visible={visible}
                     onOk={this.handleOkPDF}
@@ -352,7 +354,7 @@ class PaperDetail extends Component {
                     okText="关闭"
                     cancelText=""
                     destroyOnClose={true}
-                    width= "50vw"
+                    width="50vw"
                   >
                     <Document
                       file={testPDF}
@@ -413,7 +415,7 @@ class PaperDetail extends Component {
 
               </Panel>
 
-              <Panel header="标签" key="2">
+              <Panel header="自定义标签" key="2">
 
                 <div>
                   {customTagNames.map((tag, index) => {
@@ -447,13 +449,6 @@ class PaperDetail extends Component {
                     </Tag>
                   )}
                 </div>
-                <Select
-                  mode="tags"
-                  style={{ width: '100%' }}
-                  placeholder="Tags Mode"
-                  onChange={this.selectHandleChange}
-                >
-                </Select>
               </Panel>
             </Collapse>
 

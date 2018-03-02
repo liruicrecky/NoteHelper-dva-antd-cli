@@ -39,6 +39,15 @@ export const showAllFollowPaper = ({ payload }) => {
   })
 };
 
+export const fetchPaperByTag = ({ payload }) => {
+  const postUrl = '/api/searchByTag?tagId=' + payload.tagId;
+  return axios.post(postUrl, null, {
+    headers: {
+      'token': payload.token,
+    }
+  })
+};
+
 export const fetchPaperComment = ({ payload }) => {
   const postUrl = '/api/showComment?docId=' + payload.docId + '&BeginIndex=' + payload.BeginIndex +
     '&PageSize=' + payload.PageSize;

@@ -6,11 +6,7 @@ import styles from './ShowMyFollowPaper.less';
 import MyFollowPaper from './ShowMyFollowPaper';
 import TagPage from './TagPage';
 
-class ShowAllPaperContainer extends Component {
-
-  state = {
-    tagId: "",
-  };
+class ShowMyFollowPaperContainer extends Component {
 
   render() {
     return (
@@ -35,4 +31,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ShowAllPaperContainer);
+export default connect(mapStateToProps)(ShowMyFollowPaperContainer);

@@ -26,7 +26,6 @@ export const fetchTag = ({ payload }) => axios.post('/api/showTaglib', null, {
   }
 });
 
-
 export const deleteCustomTag = ({ payload }) => {
 
   const { tagId, token } = payload;

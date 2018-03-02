@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, Button, Spin, Modal, Menu, Dropdown, Icon, Select, Row, Checkbox } from 'antd';
+import { List, Button, Spin, Modal, Menu, Dropdown, Icon, Select, Row, Checkbox, Divider, message } from 'antd';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 import axios from 'axios';
@@ -57,6 +57,10 @@ class ShowMyFollowPaper extends Component {
           selectTagsChildren,
         })
       });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ papers: nextProps.paperList });
   }
 
   // unFollow paper modal
@@ -140,9 +144,6 @@ class ShowMyFollowPaper extends Component {
   // operation menu click
   handleMenuClick = (key, e) => {
     switch (e.key) {
-      case "addToTag":
-        this.addPaperToTagShowModal(key);
-        break;
       case "downloadPdf":
         this.downPaperAsPDF(key);
         break;
@@ -184,16 +185,20 @@ class ShowMyFollowPaper extends Component {
         else
           postUrl += v;
       });
+
+      axios.post(postUrl, null, {
+        headers: {
+          'token': this.props.token,
+        }
+      }).then((response) => {
+        console.log(response);
+        saveAsFile(response.data.result.list, "txt", "1.txt")
+      })
+    } else {
+      message.info("请先勾选需要的文献！")
     }
 
-    axios.post(postUrl, null, {
-      headers: {
-        'token': this.props.token,
-      }
-    }).then((response) => {
-      console.log(response);
-      saveAsFile(response.data.result.list, "txt", "1.txt")
-    })
+
   };
 
   // down pdf
@@ -270,11 +275,10 @@ class ShowMyFollowPaper extends Component {
 
   menu = (key) => (
     <Menu onClick={this.handleMenuClick.bind(this, key)}>
-      <Menu.Item key="addToTag">添加到自定义标签</Menu.Item>
       <Menu.Item key="downloadPdf">下载PDF</Menu.Item>
       <Menu.Item key="exportReference">导出引用</Menu.Item>
       <Menu.Item key="unFollow">取消关注</Menu.Item>
-      <Menu.Item key="5">3rd item</Menu.Item>
+      <Menu.Item key="5">占位</Menu.Item>
     </Menu>
   );
 
@@ -291,14 +295,20 @@ class ShowMyFollowPaper extends Component {
       checkedList.push(paperId);
       if (papers.length === checkedList.length) checkAll = true;
       papers.find((v) => v.doc_id === paperId).checked = true;
-      this.setState({ checkedList, checkAll, papers });
+      this.setState({
+        checkedList, checkAll, papers,
+        indeterminate: !!checkedList.length && (checkedList.length < papers.length),
+      });
 
     } else {
       // 没选中
       const newCheckedList = checkedList.filter((v) => v !== paperId);
       if (papers.length !== newCheckedList.length) checkAll = false;
       papers.find((v) => v.doc_id === paperId).checked = false;
-      this.setState({ checkedList: newCheckedList, checkAll, papers });
+      this.setState({
+        checkedList: newCheckedList, checkAll, papers,
+        indeterminate: !!newCheckedList.length && (newCheckedList.length < papers.length),
+      });
     }
   };
 
@@ -355,6 +365,7 @@ class ShowMyFollowPaper extends Component {
             style={{ float: "right", marginRight: 8 }}
           >导出</Button>
         </Row>
+        <Divider/>
         <Row>
           <List
             className={styles["loadmore-list"]}

@@ -56,7 +56,6 @@ export default {
     // fetch tags
     * fetchTag({ payload }, { call, put }) {
       const { data } = yield call(fetchTag, { payload });
-      console.log("data: ", data);
       if (data) {
         if (data.status !== "1") {
           yield put({
