@@ -80,13 +80,6 @@ class PaperDetail extends Component {
       });
   }
 
-  // time format
-  getTime = (time) => {
-    const newDate = new Date();
-    newDate.setTime(time * 1000);
-    return newDate.toLocaleString();
-  };
-
   // comment function
   textAreaOnChange = (e) => {
     this.setState({

@@ -8,7 +8,7 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const { TextArea } = Input;
 
-class AddPaper extends Component {
+class AddSinglePaper extends Component {
 
   state = {
     publicTags: [],
@@ -326,4 +326,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Form.create()(AddPaper));
+export default connect(mapStateToProps)(Form.create()(AddSinglePaper));

@@ -7,6 +7,7 @@ import {
   deletePaperComment,
   commentPaper,
   addNewPaper,
+  addMultiPaper,
   searchPaperByKeyword,
   fetchPaperByTag,
 } from '../services/Paper';
@@ -19,8 +20,23 @@ export default {
       papers: [],
       comments: [],
       error: false,
+      showList: false,
     },
-  subscriptions: {},
+  subscriptions: {
+    setup({ dispatch, history }) {
+      history.listen(({ pathname }) => {
+        if (pathname === '/dashboard') {
+          dispatch({
+            type: 'setShowListFalse'
+          });
+        } else {
+          dispatch({
+            type: 'setShowListFalse',
+          })
+        }
+      });
+    }
+  },
   effects: {
 
     // show all papers
@@ -162,7 +178,6 @@ export default {
     // add new paper
     * addNewPaper({ payload }, { call, put }) {
       const { data } = yield call(addNewPaper, { payload });
-      console.log("data: ", data);
       if (data) {
         if (data.status !== "1") {
           yield put({
@@ -177,6 +192,24 @@ export default {
       }
     },
 
+    // add multi paper
+    * addMultiPaper({ payload }, { call, put }) {
+      const { data } = yield call(addMultiPaper, { payload });
+      console.log("data: ", data);
+      /*if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'addNewPaperFailed',
+          })
+        } else {
+          yield put({
+            type: 'addNewPaperSuccess',
+          });
+          yield put(routerRedux.push('/dashboard'));
+        }
+      }*/
+    },
+
     // search paper use keyword
     * searchPaperByKeyword({ payload }, { call, put }) {
       const { data } = yield call(searchPaperByKeyword, { payload });
@@ -187,6 +220,7 @@ export default {
             type: 'searchPaperByKeywordFailed',
           })
         } else {
+          yield put(routerRedux.push('/'));
           yield put({
             type: 'searchPaperByKeywordSuccess',
             payload: data.result.list,
@@ -338,6 +372,14 @@ export default {
       }
     },
 
+    // show list
+    setShowListFalse(state) {
+      return {
+        ...state,
+        showList: false,
+      }
+    },
+
     // search paper use keyword
     searchPaperByKeywordFailed(state) {
       return {
@@ -368,6 +410,7 @@ export default {
       return {
         ...state,
         error: false,
+        showList: true,
         papers,
       }
     },

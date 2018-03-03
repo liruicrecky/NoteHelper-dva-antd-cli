@@ -49,8 +49,8 @@ class SideMenu extends Component {
             </NavLink>
           </Menu.Item>
           <MenuItemGroup key="g1" title="文献管理">
-            <Menu.Item key="/dashboard/uploadPaper">
-              <NavLink to="/dashboard/uploadPaper">
+            <Menu.Item key="/dashboard/addPaper">
+              <NavLink to="/dashboard/addPaper">
                 <Icon type="file-add"/>
                 <span>新增文献</span>
               </NavLink>

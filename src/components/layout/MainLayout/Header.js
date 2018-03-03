@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Menu, Button, Icon, Tooltip, Row, Col } from 'antd';
+import { Menu, Button, Input, Icon, Tooltip, Row, Col } from 'antd';
 import { Link } from 'dva/router';
 
 import style from './Header.less';
 import Logo from '../../../assets/logo.png';
 
+const Search = Input.Search;
 
-const Header = ({ location, loading, dispatch, isLogin, account }) => {
+
+const Header = ({ location, loading, dispatch, isLogin, account, inDashboard }) => {
 
   const handleClickLogOut = (e) => {
     e.preventDefault();
@@ -64,19 +66,43 @@ const Header = ({ location, loading, dispatch, isLogin, account }) => {
     backgroundSize: '100% 100%',
   };
 
+  const searchPaper = (value) => {
+    const data = {
+      keyword: value,
+      token: account.token,
+    };
+
+    dispatch({
+      type: 'paper/searchPaperByKeyword',
+      payload: data,
+    })
+  };
+
   return (
     <div>
       <Row>
         <Col span={3}>
-          <div className={style.logo} style={logoImg}/>
+          <Link to="/">
+            <div className={style.logo} style={logoImg}/>
+          </Link>
         </Col>
-        <Col span={13}>
+        <Col span={2}>
           <Menu
             mode="horizontal"
             className={style["menu"]}
           >
             <Menu.Item key="/"><Link to="/">主页</Link></Menu.Item>
           </Menu>
+        </Col>
+        <Col span={11}>
+          {inDashboard &&
+          <Search
+            style={{ width: "45vw", marginTop: "20px" }}
+            placeholder="试试搜索一下吧...  :)"
+            onSearch={searchPaper}
+            enterButton
+          />
+          }
         </Col>
         <Col span={8}>
           {isLogin ? login() : notLogin()}
@@ -90,6 +116,7 @@ const mapStateToProps = (state) => {
   return {
     isLogin: state.user.isLogin,
     account: state.user.account,
+    inDashboard: state.user.inDashboard,
     loading: state.loading.global,
   };
 };

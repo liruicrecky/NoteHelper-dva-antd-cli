@@ -18,3 +18,14 @@ export const fetchDynamicMessage = ({ payload }) => {
   return axios.post(postUrl, null);
 };
 
+export const fetchUserAvatar = ({ payload }) => {
+
+  const postUrl = '/api/showImg?userId=' + payload.userId;
+
+  return axios.post(postUrl, null, {
+    headers: {
+      "token": payload.token,
+    }
+  })
+};
+

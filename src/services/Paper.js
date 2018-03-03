@@ -72,6 +72,10 @@ export const addNewPaper = ({ payload }) => axios.post('/api/createDocument', pa
   }
 });
 
+export const addMultiPaper = ({payload}) => {
+
+};
+
 export const searchPaperByKeyword = ({ payload }) => {
   const postUrl = '/api/searchByKeywords?text=' + payload.keyword;
   return axios.post(postUrl, null, {

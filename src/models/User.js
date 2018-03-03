@@ -4,6 +4,7 @@ import {
   signUp,
   fetchDynamicMessageNum,
   fetchDynamicMessage,
+  fetchUserAvatar,
 } from '../services/User';
 import { storageTokenKey } from '../utils/constant';
 import { setLocalStorage, getLocalStorage } from '../utils/helper';
@@ -22,6 +23,7 @@ export default {
       dynamicMessageNum: 0,
       dynamicMessage: [],
       error: false,
+      inDashboard: false,
     },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -38,6 +40,13 @@ export default {
           dispatch({
             type: 'fetchDynamicMessageNum'
           });
+          dispatch({
+            type: 'setInDashBoardTrue'
+          });
+        } else {
+          dispatch({
+            type: 'setInDashBoardFalse',
+          })
         }
       });
     }
@@ -65,6 +74,16 @@ export default {
             type: 'authSuccess',
             payload: data.result,
           });
+
+          // user's avatar
+          yield put({
+            type: 'fetchUserAvatar',
+            payload: {
+              userId: data.result.userId,
+              token: data.result.token,
+            }
+          });
+
           yield put(routerRedux.push('/'));
         }
       } else {
@@ -136,7 +155,6 @@ export default {
     // fetch dynamic message numbers
     * fetchDynamicMessage({ payload }, { call, put }) {
       const { data } = yield call(fetchDynamicMessage, { payload });
-      console.log("data: ", data);
       if (data) {
         if (data.status !== "1") {
           yield put({
@@ -149,6 +167,24 @@ export default {
           })
         }
       }
+    },
+
+    // fetch user's avatar
+    * fetchUserAvatar({ payload }, { call, put }) {
+      const { data } = yield call(fetchUserAvatar, { payload });
+      console.log("avatar data: ", data);
+      // if (data) {
+      //   if (data.status !== "1") {
+      //     yield put({
+      //       type: 'fetchDynamicMessageFailed',
+      //     })
+      //   } else {
+      //     yield put({
+      //       type: 'fetchDynamicMessageSuccess',
+      //       payload: data.result.list,
+      //     })
+      //   }
+      // }
     },
 
   },
@@ -232,6 +268,20 @@ export default {
       return {
         ...state,
         error: true,
+      }
+    },
+
+    // dashboard
+    setInDashBoardTrue(state) {
+      return {
+        ...state,
+        inDashboard: true,
+      }
+    },
+    setInDashBoardFalse(state) {
+      return {
+        ...state,
+        inDashboard: false,
       }
     },
 

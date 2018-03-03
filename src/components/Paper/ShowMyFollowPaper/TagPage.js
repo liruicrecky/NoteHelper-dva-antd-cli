@@ -122,12 +122,42 @@ class TagPage extends Component {
     this.setState({ selectedTags: nextSelectedTags });
   }
 
+  // custom tag
+  customTagHandleChange(tag, checked) {
+    /*const { selectedTags } = this.state;
+    const nextSelectedTags = checked ?
+      [...selectedTags, tag] :
+      selectedTags.filter(t => t !== tag);*/
+    const nextSelectedTags = checked ? [tag] : [];
+
+    const tagId = this.state.customTags.find(v => v.tag_name === tag).tag_id;
+
+    if (checked) {
+      this.props.dispatch({
+        type: 'paper/fetchPaperByTag',
+        payload: {
+          tagId: tagId,
+          token: this.props.token,
+        }
+      });
+    } else {
+      this.props.dispatch({
+        type: 'paper/showAllFollowPaper',
+        payload: {
+          token: this.props.token,
+        }
+      });
+    }
+
+    this.setState({ selectedTags: nextSelectedTags });
+  }
+
   render() {
     const { customTagNames, publicTagNames, inputVisible, inputValue, selectedTags } = this.state;
     return (
       <div>
         <span style={{ fontSize: '16px' }}>公共标签</span>
-        <Divider style={{ marginTop: "1px", marginBottom: "5px" }}/>
+        <Divider style={{ marginTop: "1px", marginBottom: "1vh" }}/>
 
         <div>
           {publicTagNames.map(tag => (
@@ -141,41 +171,20 @@ class TagPage extends Component {
           ))}
         </div>
 
-        <Divider style={{ marginTop: "1vh", marginBottom: "5px" }}/>
+        <Divider style={{ marginTop: "1vh", marginBottom: "1vh" }}/>
         <span style={{ fontSize: '16px' }}>自定义标签</span>
-        <Divider style={{ marginTop: "1px", marginBottom: "5px" }}/>
+        <Divider style={{ marginTop: "1px", marginBottom: "1vh" }}/>
 
         <div>
-          {customTagNames.map((tag, index) => {
-            const isLongTag = tag.length > 20;
-            const tagElem = (
-              <Tag key={tag} closable={true} style={{ marginBottom: "5px" }}
-                   afterClose={() => this.handleClose(tag)}>
-                {isLongTag ? `${tag.slice(0, 20)}...` : tag}
-              </Tag>
-            );
-            return isLongTag ? <Tooltip title={tag} key={tag}>{tagElem}</Tooltip> : tagElem;
-          })}
-          {inputVisible && (
-            <Input
-              ref={this.saveInputRef}
-              type="text"
-              size="small"
-              style={{ width: 78 }}
-              value={inputValue}
-              onChange={this.handleInputChange}
-              onBlur={this.handleInputConfirm}
-              onPressEnter={this.handleInputConfirm}
-            />
-          )}
-          {!inputVisible && (
-            <Tag
-              onClick={this.showInput}
-              style={{ background: '#fff', borderStyle: 'dashed' }}
+          {customTagNames.map(tag => (
+            <CheckableTag
+              key={tag}
+              checked={selectedTags.indexOf(tag) > -1}
+              onChange={checked => this.customTagHandleChange(tag, checked)}
             >
-              <Icon type="plus"/> 新标签
-            </Tag>
-          )}
+              {tag}
+            </CheckableTag>
+          ))}
         </div>
 
       </div>

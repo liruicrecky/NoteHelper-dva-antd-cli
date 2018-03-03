@@ -322,7 +322,6 @@ class ShowMyFollowPaper extends Component {
         v.checked = true;
         checkedList.push(v.doc_id);
       })
-
     } else {
       papers.forEach((v) => {
         v.checked = false;

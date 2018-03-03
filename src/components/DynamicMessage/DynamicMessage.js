@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { List, Button, Spin } from 'antd';
 import { connect } from 'dva';
+import { Link } from 'dva/router';
 
 import styles from './DynamicMessage.less';
+import { getTime } from '../../utils/helper';
 
 class DynamicMessage extends Component {
 
@@ -71,14 +73,6 @@ class DynamicMessage extends Component {
     });
   };
 
-  // time format
-  getTime = (time) => {
-    const newDate = new Date();
-    newDate.setTime(time * 1000);
-    return newDate.toLocaleString();
-  };
-
-
   render() {
     const { loading, loadingMore, showLoadingMore } = this.state;
     const { dynamicMessage } = this.props;
@@ -103,8 +97,8 @@ class DynamicMessage extends Component {
             <List.Item key={item.doc_id}
                        extra={<Button disabled>已读</Button>}>
               <List.Item.Meta
-                title={item.doc_name}
-                description={this.getTime(item.in_time)}
+                title={<Link to={"/dashboard/paperDetail/" + item.doc_id}>{item.doc_title}</Link>}
+                description={getTime(item.in_time)}
               />
               <span>您关注的文章有新动态了！</span>
             </List.Item>

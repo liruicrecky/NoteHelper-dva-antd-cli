@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
-import { Row, Col, Input, Button, Spin, List } from 'antd';
+import { Row, Col, Input, Button, Spin, List, Tag } from 'antd';
 
 import styles from './MainPage.less';
 
@@ -14,9 +14,8 @@ class MainPage extends Component {
     loading: false,
     loadingMore: false,
     showLoadingMore: true,
-    showList: false,
-    papers: [],
   };
+
 
   searchPaper = (value) => {
     const data = {
@@ -27,12 +26,6 @@ class MainPage extends Component {
     this.props.dispatch({
       type: 'paper/searchPaperByKeyword',
       payload: data,
-    }).then(() => {
-      const papers = this.props.papers;
-      this.setState({
-        papers,
-        showList: true,
-      })
     })
   };
 
@@ -50,7 +43,8 @@ class MainPage extends Component {
 
   render() {
 
-    const { loading, loadingMore, showLoadingMore, showList, papers } = this.state;
+    const { loading, loadingMore, showLoadingMore } = this.state;
+    const { showList, papers } = this.props;
 
     const loadMore = showLoadingMore ? (
       <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
@@ -70,6 +64,19 @@ class MainPage extends Component {
             />
           </Col>
         </Row>
+
+        <Row type="flex" justify="center" style={{ marginTop: "5vh" }}>
+          <div className={styles["tag-title"]}>热门标签</div>
+        </Row>
+
+        <Row type="flex" justify="center" style={{ marginTop: "2vh" }}>
+          <Tag className={styles["tag"]} color="magenta">C++</Tag>
+          <Tag className={styles["tag"]} color="red">red</Tag>
+          <Tag className={styles["tag"]} color="volcano">volcano</Tag>
+          <Tag className={styles["tag"]} color="orange">orange</Tag>
+          <Tag className={styles["tag"]} color="gold">gold</Tag>
+        </Row>
+
         <Row type="flex" justify="center" style={{ marginTop: "5vh" }}>
           <Col span={16}>
             {showList &&
@@ -102,6 +109,7 @@ class MainPage extends Component {
 const mapStateToProps = (state) => {
   return {
     papers: state.paper.papers,
+    showList: state.paper.showList,
     error: state.paper.error,
     token: state.user.account.token,
   };

@@ -10,7 +10,7 @@ import ModifyPersonalInformationComponent from '../../ModifyPersonalInformation/
 import ShowAllPaperContainer from '../../Paper/ShowAllPaper/ShowAllPaperContainer';
 import ShowMyFollowPaperContainer from '../../Paper/ShowMyFollowPaper/ShowMyFollowPaperContainer';
 import PaperDetail from '../../Paper/PaperDetail/PaperDetail';
-import UploadPaper from '../../Paper/AddPaper/AddPaper';
+import AddPaper from '../../Paper/AddPaper/AddPaperContainer';
 
 const { Header, Content } = Layout;
 
@@ -47,7 +47,7 @@ class DashboardLayout extends React.Component {
               <Route path="/dashboard/showAllPaper" component={ShowAllPaperContainer}/>
               <Route path="/dashboard/showMyFollowPaper" component={ShowMyFollowPaperContainer}/>
               <Route path="/dashboard/paperDetail/:paperId" component={PaperDetail}/>
-              <Route path="/dashboard/uploadPaper" component={UploadPaper}/>
+              <Route path="/dashboard/addPaper" component={AddPaper}/>
             </Switch>
           </Content>
         </Layout>
