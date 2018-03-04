@@ -6,11 +6,12 @@ import {
 import { Document, Page } from 'react-pdf';
 import { connect } from 'dva';
 
-import testPDF from '/home/akka/Code/upload/1745-6215-12-1.pdf';
+/*import testPDF from '/home/akka/Code/upload/1745-6215-12-1.pdf';*/
 
 import styles from './PaperDetail.less';
 import PaperComment from './PaperComment';
 import { pageSize } from "../../../utils/constant";
+import axios from "axios/index";
 
 const Panel = Collapse.Panel;
 
@@ -36,7 +37,7 @@ class PaperDetail extends Component {
     numPages: null,
     pageNumber: 1,
     visible: false,
-    paperPDF: "",
+    paperPDFUrl: "",
   };
 
   // load data at first time
@@ -45,6 +46,14 @@ class PaperDetail extends Component {
     // get paper id from params and set to state
     const { paperId } = this.props.match.params;
     this.setState({ paperId: paperId });
+
+    // get paper information
+    this.props.dispatch({
+      type: 'paper/fetchPaperInformation',
+      payload: {
+        docId: paperId,
+      }
+    });
 
     // get paper comment
     const values = {
@@ -250,20 +259,19 @@ class PaperDetail extends Component {
     });
 
     // get pdf
-    const dataPDF = {
-      token: this.props.account.token,
-      docId: this.state.paperId,
-    };
-    this.props.dispatch({
-      type: 'paper/getPaperPDF',
-      payload: dataPDF,
-    })
-    //   .then(() => {
-    //   // this.setState({
-    //   //   paperPDF: this.props.paperPDF,
-    //   // })
-    // })
 
+    const postUrl = '/api/GetPdfUrl?docId=' + this.state.paperId;
+    axios.get(postUrl, {
+      headers: {
+        'Token': this.props.account.token,
+      }
+    }).then((response) => {
+      const paperPDFUrl = "http://localhost:8080" + response.data.result.urlName;
+      console.log("pdf: ", paperPDFUrl);
+      this.setState({
+        paperPDFUrl,
+      })
+    })
   };
 
   handleOkPDF = (e) => {
@@ -282,6 +290,9 @@ class PaperDetail extends Component {
 
 
   render() {
+
+    // paper information
+    const { paperInformation } = this.props;
 
     // comment
     const { loading, comments, loadingMore, showLoadingMore, rateValue } = this.state;
@@ -321,7 +332,7 @@ class PaperDetail extends Component {
     };
 
     // pdf
-    const { pageNumber, numPages, visible } = this.state;
+    const { pageNumber, numPages, visible, paperPDFUrl } = this.state;
 
     return (
       <div className={styles.gutter}>
@@ -329,12 +340,10 @@ class PaperDetail extends Component {
           <Col className={styles["ant-row"]} span={18}>
             <Row>
               <Col span={20}>
-                <div>Nano-sized transition-metal oxides as negative-electrode materials for lithium-ion batteries</div>
+                <div className={styles["paper-title"]}>{paperInformation.doc_title}</div>
                 <Divider/>
-                <div><p>摘要</p></div>
-                <div>Rechargeable solid-state batteries have long been considered an attractive power source for a
-                  wide variety of applications, and in particular, lithium-ion batteries are emerging as the
-                </div>
+                <div className={styles["paper-sub-title"]}><p>摘要</p></div>
+                <div>{paperInformation.doc_summary}</div>
               </Col>
 
               <Col span={4}>
@@ -350,7 +359,7 @@ class PaperDetail extends Component {
                     width="50vw"
                   >
                     <Document
-                      file={testPDF}
+                      file={paperPDFUrl}
                       onLoadSuccess={this.onDocumentLoad}
                     >
                       <Page pageNumber={pageNumber}/>
@@ -398,13 +407,8 @@ class PaperDetail extends Component {
                   </span>
                 </div>
                 <Divider/>
-                <div>
-                  Poizot P, Laruelle S, Grugeon S, Dupont L, and Tarascon J M.
-
-                  Nano-sized transition-metal oxides as negative-electrode materials for lithium-ion batteries.
-
-                  Nature, Volume 407, Issue 6803, 2000, Pages 496-499.
-                </div>
+                <div>{paperInformation.doc_publish}</div>
+                <div> {paperInformation.doc_author}</div>
 
               </Panel>
 
@@ -456,8 +460,8 @@ const mapStateToProps = (state) => {
   return {
     customTags: state.tag.customTags,
     customTagNames: state.tag.customTagNames,
+    paperInformation: state.paper.paperInformation,
     comments: state.paper.comments,
-    paperPDF: state.paper.paperPDF,
     error: state.paper.error,
     account: state.user.account,
   };

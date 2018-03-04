@@ -14,18 +14,31 @@ class MainPage extends Component {
     loading: false,
     loadingMore: false,
     showLoadingMore: true,
+    papers: [],
   };
 
+  componentDidMount() {
+    // if login, then fetch top ten papers
+    const props = this.props;
+
+    if (props.isLogin) {
+      props.dispatch({
+        type: 'paper/fetchTopTenPapers',
+        payload: {
+          token: props.token,
+        }
+      }).then(() => {
+
+      })
+    }
+  }
 
   searchPaper = (value) => {
-    const data = {
-      keyword: value,
-      token: this.props.token,
-    };
-
     this.props.dispatch({
       type: 'paper/searchPaperByKeyword',
-      payload: data,
+      payload: {
+        keyword: value,
+      },
     })
   };
 
@@ -44,7 +57,9 @@ class MainPage extends Component {
   render() {
 
     const { loading, loadingMore, showLoadingMore } = this.state;
-    const { showList, papers } = this.props;
+    const { papers } = this.props;
+
+    const isTopTen = papers.length === 10;
 
     const loadMore = showLoadingMore ? (
       <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
@@ -79,7 +94,7 @@ class MainPage extends Component {
 
         <Row type="flex" justify="center" style={{ marginTop: "5vh" }}>
           <Col span={16}>
-            {showList &&
+            {isTopTen && <span className={styles["top-ten"]}>最新上传Top10</span>}
             <List
               className={styles["loadmore-list"]}
               loading={loading}
@@ -90,7 +105,6 @@ class MainPage extends Component {
                 <List.Item key={item.doc_id}
                            extra={<Button onClick={this.followPaper.bind(null, item.doc_id)}>关注</Button>}>
                   <List.Item.Meta
-                    /*avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}*/
                     title={<Link to={"/dashboard/paperDetail/" + item.doc_id}>{item.doc_title}</Link>}
                     description={item.doc_publish + " " + item.doc_author}
                   />
@@ -98,7 +112,6 @@ class MainPage extends Component {
                 </List.Item>
               )}
             />
-            }
           </Col>
         </Row>
       </div>
@@ -112,6 +125,7 @@ const mapStateToProps = (state) => {
     showList: state.paper.showList,
     error: state.paper.error,
     token: state.user.account.token,
+    isLogin: state.user.isLogin,
   };
 };
 

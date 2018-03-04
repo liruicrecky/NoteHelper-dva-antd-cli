@@ -1,8 +1,8 @@
 import {
-  showAllPaper,
+  fetchAllPaper,
   followPaper,
   unFollowPaper,
-  showAllFollowPaper,
+  fetchAllFollowPaper,
   fetchPaperComment,
   deletePaperComment,
   commentPaper,
@@ -10,6 +10,8 @@ import {
   addMultiPaper,
   searchPaperByKeyword,
   fetchPaperByTag,
+  fetchPaperInformation,
+  fetchTopTenPapers,
 } from '../services/Paper';
 import { routerRedux } from "dva/router";
 
@@ -17,39 +19,29 @@ export default {
   namespace: 'paper',
   state:
     {
+      paperInformation: {},
       papers: [],
+      tagPapers:[],
       comments: [],
       error: false,
-      showList: false,
     },
   subscriptions: {
     setup({ dispatch, history }) {
-      history.listen(({ pathname }) => {
-        if (pathname === '/dashboard') {
-          dispatch({
-            type: 'setShowListFalse'
-          });
-        } else {
-          dispatch({
-            type: 'setShowListFalse',
-          })
-        }
-      });
     }
   },
   effects: {
 
-    // show all papers
-    * showAllPaper({ payload }, { call, put }) {
-      const { data } = yield call(showAllPaper, { payload });
+    // fetch all papers
+    * fetchAllPaper({ payload }, { call, put }) {
+      const { data } = yield call(fetchAllPaper, { payload });
       if (data) {
         if (data.status !== "1") {
           yield put({
-            type: 'getAllPapersFailed'
+            type: 'fetchAllPaperFailed'
           })
         } else {
           yield put({
-            type: 'getAllPapersSuccess',
+            type: 'fetchAllPaperSuccess',
             payload: data.result,
           });
         }
@@ -106,17 +98,17 @@ export default {
       }
     },
 
-    // show all follow paper
-    * showAllFollowPaper({ payload }, { call, put }) {
-      const { data } = yield call(showAllFollowPaper, { payload });
+    // fetch all follow paper
+    * fetchAllFollowPaper({ payload }, { call, put }) {
+      const { data } = yield call(fetchAllFollowPaper, { payload });
       if (data) {
         if (data.status !== "1") {
           yield put({
-            type: 'showAllFollowPaperFailed',
+            type: 'fetchAllFollowPaperFailed',
           })
         } else {
           yield put({
-            type: 'showAllFollowPaperSuccess',
+            type: 'fetchAllFollowPaperSuccess',
             payload: data.result.list,
           })
         }
@@ -220,9 +212,42 @@ export default {
             type: 'searchPaperByKeywordFailed',
           })
         } else {
-          yield put(routerRedux.push('/'));
           yield put({
             type: 'searchPaperByKeywordSuccess',
+            payload: data.result.list,
+          });
+        }
+      }
+    },
+
+    // fetch paper information
+    * fetchPaperInformation({ payload }, { call, put }) {
+      const { data } = yield call(fetchPaperInformation, { payload });
+      if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'fetchPaperInformationFailed',
+          })
+        } else {
+          yield put({
+            type: 'fetchPaperInformationSuccess',
+            payload: data.result.list[0],
+          });
+        }
+      }
+    },
+
+    // fetch top ten paper
+    * fetchTopTenPapers({ payload }, { call, put }) {
+      const { data } = yield call(fetchTopTenPapers, { payload });
+      if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'fetchTopTenPapersFailed',
+          })
+        } else {
+          yield put({
+            type: 'fetchTopTenPapersSuccess',
             payload: data.result.list,
           });
         }
@@ -234,14 +259,14 @@ export default {
   reducers: {
 
     // show all papers
-    getAllPapersFailed(state) {
+    fetchAllPaperFailed(state) {
       return {
         ...state,
         error: true,
       }
     },
 
-    getAllPapersSuccess(state, { payload }) {
+    fetchAllPaperSuccess(state, { payload }) {
       return {
         ...state,
         error: false,
@@ -261,9 +286,18 @@ export default {
       return {
         ...state,
         error: false,
-        papers: payload,
+        tagPapers: payload,
       };
     },
+
+    fetchPaperByTagSetTagPapers(state) {
+      return {
+        ...state,
+        error: true,
+        tagPapers:[],
+      }
+    },
+
 
     // follow paper
     followPaperFailed(state) {
@@ -296,14 +330,14 @@ export default {
     },
 
     // show all follow paper
-    showAllFollowPaperFailed(state) {
+    fetchAllFollowPaperFailed(state) {
       return {
         ...state,
         error: true,
       }
     },
 
-    showAllFollowPaperSuccess(state, { payload }) {
+    fetchAllFollowPaperSuccess(state, { payload }) {
       return {
         ...state,
         error: false,
@@ -372,14 +406,6 @@ export default {
       }
     },
 
-    // show list
-    setShowListFalse(state) {
-      return {
-        ...state,
-        showList: false,
-      }
-    },
-
     // search paper use keyword
     searchPaperByKeywordFailed(state) {
       return {
@@ -410,10 +436,42 @@ export default {
       return {
         ...state,
         error: false,
-        showList: true,
         papers,
       }
     },
+
+    // fetch paper information
+    fetchPaperInformationFailed(state) {
+      return {
+        ...state,
+        error: true,
+      }
+    },
+
+    fetchPaperInformationSuccess(state, { payload }) {
+      return {
+        ...state,
+        error: false,
+        paperInformation: payload,
+      }
+    },
+
+    // fetch top ten papers
+    fetchTopTenPapersFailed(state) {
+      return {
+        ...state,
+        error: true,
+      }
+    },
+
+    fetchTopTenPapersSuccess(state, { payload }) {
+      return {
+        ...state,
+        error: false,
+        papers: payload,
+      }
+    },
+
 
   },
 };

@@ -1,11 +1,15 @@
 import axios from 'axios';
 
-export const showAllPaper = ({ payload }) => {
+export const fetchAllPaper = ({ payload }) => {
 
   const postUrl = '/api/show?BeginIndex=' + payload.BeginIndex +
-    '&PageSize=' + payload.PageSize + '&docType=' + payload.docType;
+    '&PageSize=' + payload.PageSize;
 
-  return axios.post(postUrl);
+  return axios.post(postUrl, null, {
+    headers: {
+      token: payload.token,
+    }
+  });
 };
 
 export const followPaper = ({ payload }) => {
@@ -14,7 +18,7 @@ export const followPaper = ({ payload }) => {
 
   return axios.post(postUrl, null, {
     headers: {
-      'token': token,
+      token: token,
     }
   })
 };
@@ -25,16 +29,16 @@ export const unFollowPaper = ({ payload }) => {
 
   return axios.post(postUrl, null, {
     headers: {
-      'token': token,
+      token: token,
     }
   })
 };
 
-export const showAllFollowPaper = ({ payload }) => {
-  const { token } = payload;
-  return axios.post('/api/showFollow', null, {
+export const fetchAllFollowPaper = ({ payload }) => {
+  const getUrl = '/api/showFollow?BeginIndex=' + payload.BeginIndex + '&PageSize=' + payload.PageSize;
+  return axios.get(getUrl, {
     headers: {
-      'token': token,
+      'token': payload.token,
     }
   })
 };
@@ -43,9 +47,14 @@ export const fetchPaperByTag = ({ payload }) => {
   const postUrl = '/api/searchByTag?tagId=' + payload.tagId;
   return axios.post(postUrl, null, {
     headers: {
-      'token': payload.token,
+      token: payload.token,
     }
   })
+};
+
+export const fetchPaperInformation = ({ payload }) => {
+  const getUrl = '/api/showDocInformation?docId=' + payload.docId;
+  return axios.get(getUrl);
 };
 
 export const fetchPaperComment = ({ payload }) => {
@@ -61,26 +70,28 @@ export const deletePaperComment = ({ payload }) => {
   const postUrl = '/api/removeComment?mId=' + payload.m_id;
   return axios.post(postUrl, null, {
     headers: {
-      'token': payload.token,
+      token: payload.token,
     }
   })
 };
 
 export const addNewPaper = ({ payload }) => axios.post('/api/createDocument', payload, {
   headers: {
-    'token': payload.token,
+    token: payload.token,
   }
 });
 
-export const addMultiPaper = ({payload}) => {
+export const addMultiPaper = ({ payload }) => {
 
 };
 
 export const searchPaperByKeyword = ({ payload }) => {
   const postUrl = '/api/searchByKeywords?text=' + payload.keyword;
-  return axios.post(postUrl, null, {
-    headers: {
-      'token': payload.token,
-    }
-  })
+  return axios.post(postUrl, null)
 };
+
+export const fetchTopTenPapers = ({ payload }) => axios.post('/api/topTenDoc', null, {
+  headers: {
+    Token: payload.token,
+  }
+});

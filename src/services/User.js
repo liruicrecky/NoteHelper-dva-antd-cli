@@ -18,9 +18,21 @@ export const fetchDynamicMessage = ({ payload }) => {
   return axios.post(postUrl, null);
 };
 
+export const fetchUserInformation = ({ payload }) => axios.post('/api/showInformation', null, {
+  headers: {
+    "Token": payload.token,
+  }
+});
+
+export const modifyUserInformation = ({ payload }) => axios.post('/api/ModifyCustomerInformation', payload, {
+  headers: {
+    "Token": payload.token,
+  }
+});
+
 export const fetchUserAvatar = ({ payload }) => {
 
-  const postUrl = '/api/showImg?userId=' + payload.userId;
+  const postUrl = '/api/GetImgUrl';
 
   return axios.post(postUrl, null, {
     headers: {

@@ -27,41 +27,51 @@ class ShowMyFollowPaper extends Component {
     checkedList: [],
     indeterminate: true,
     checkAll: false,
+    // page pagination
+    BeginIndex: 0,
   };
 
   // load data at first time
   componentDidMount() {
     const values = {
       token: this.props.token,
+      BeginIndex: 0,
+      PageSize: pageSize,
     };
 
-    this.props.dispatch({ type: 'paper/showAllFollowPaper', payload: values })
-      .then(() => {
+    this.props.dispatch({
+      type: 'paper/fetchAllFollowPaper',
+      payload: values
+    }).then(() => {
 
-        // select tag
-        const customTagNames = this.props.customTagNames;
-        const selectTagsChildren = [];
-        customTagNames.forEach((v) => {
-          selectTagsChildren.push(<Option key={v}>{v}</Option>);
-        });
+      // paper
+      let BeginIndex = this.state.BeginIndex + pageSize;
 
-        // paper id
-        const paperList = this.props.paperList;
-        paperList.forEach((v) => {
-          v.checked = false
-        });
-
-        this.setState({
-          loading: false,
-          papers: paperList,
-          selectTagsChildren,
-        })
+      // select tag
+      const customTagNames = this.props.customTagNames;
+      const selectTagsChildren = [];
+      customTagNames.forEach((v) => {
+        selectTagsChildren.push(<Option key={v}>{v}</Option>);
       });
+
+      // paper id
+      const paperList = this.props.paperList;
+      paperList.forEach((v) => {
+        v.checked = false
+      });
+
+      this.setState({
+        loading: false,
+        papers: paperList,
+        BeginIndex,
+        selectTagsChildren,
+      })
+    });
   }
 
-  componentWillReceiveProps(nextProps) {
+/*  componentWillReceiveProps(nextProps) {
     this.setState({ papers: nextProps.paperList });
-  }
+  }*/
 
   // unFollow paper modal
   unFollowShowModal = (paperId) => {
@@ -91,24 +101,19 @@ class ShowMyFollowPaper extends Component {
   };
 
   // load more
-  getData = () => {
+  getData = (callback) => {
     const values = {
+      BeginIndex: this.state.BeginIndex,
+      PageSize: pageSize,
       token: this.props.token,
     };
 
-    this.props.dispatch({ type: 'paper/showAllPaper', payload: values })
-      .then(() => {
-        let BeginIndex = this.state.BeginIndex + pageSize;
-        let papers = this.state.papers;
-        this.props.paperList.forEach((v) => {
-          papers.push(v)
-        });
-        this.setState({
-          papers,
-          BeginIndex,
-          loadingMore: false,
-        })
-      });
+    this.props.dispatch({
+      type: 'paper/fetchAllFollowPaper',
+      payload: values
+    }).then(() => {
+      callback();
+    });
   };
 
   onLoadMore = () => {
@@ -116,7 +121,15 @@ class ShowMyFollowPaper extends Component {
       loadingMore: true,
     });
     this.getData(() => {
-      this.setState({}, () => {
+
+      const BeginIndex = this.state.BeginIndex + pageSize;
+      const papers = this.state.papers.concat(this.props.paperList);
+
+      this.setState({
+        papers,
+        BeginIndex,
+        loadingMore: false,
+      }, () => {
         // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
         // In real scene, you can using public method of react-virtualized:
         // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
@@ -204,17 +217,24 @@ class ShowMyFollowPaper extends Component {
   // down pdf
   downPaperAsPDF = (paperId) => {
 
-    const postUrl = '/api/showPdf?docId=' + paperId;
-
-    axios.post(postUrl, {
-      responseType: "blob",
-    }, {
+    const postUrl = '/api/GetPdfUrl?docId=' + paperId;
+    axios.get(postUrl, {
       headers: {
-        'token': this.props.token,
+        'Token': this.props.token,
       }
-    }).then((response) => {
-      saveAsFile(response.data, "pdf", "1")
+    }).then(() => {
+
     })
+    /*
+        axios.post(postUrl, {
+          responseType: "blob",
+        }, {
+          headers: {
+            'token': this.props.token,
+          }
+        }).then((response) => {
+          saveAsFile(response.data, "pdf", "1")
+        })*/
 
   };
 
@@ -343,7 +363,7 @@ class ShowMyFollowPaper extends Component {
     const loadMore = showLoadingMore ? (
       <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
         {loadingMore && <Spin/>}
-        {!loadingMore && <Button onClick={this.onLoadMore} disabled>加载更多</Button>}
+        {!loadingMore && <Button onClick={this.onLoadMore}>加载更多</Button>}
       </div>
     ) : null;
 

@@ -49,14 +49,8 @@ class ShowAllPaperTagPage extends Component {
         }
       });
     } else {
-      const data = {
-        BeginIndex: 0,
-        PageSize: pageSize,
-        docType: "M",
-      };
       this.props.dispatch({
-        type: 'paper/showAllPaper',
-        payload: data,
+        type: 'paper/fetchPaperByTagSetTagPapers',
       });
     }
 

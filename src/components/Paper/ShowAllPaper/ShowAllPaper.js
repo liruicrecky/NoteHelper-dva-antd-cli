@@ -14,6 +14,7 @@ class ShowAllPaper extends Component {
     loadingMore: false,
     showLoadingMore: true,
     papers: [],
+    tagPapers: [],
   };
 
   // load data at first time
@@ -21,46 +22,26 @@ class ShowAllPaper extends Component {
     const values = {
       BeginIndex: 0,
       PageSize: pageSize,
-      docType: "M",
+      token: this.props.token,
     };
 
-    this.props.dispatch({ type: 'paper/showAllPaper', payload: values })
-      .then(() => {
-        let BeginIndex = this.state.BeginIndex + pageSize;
-        this.setState({
-          BeginIndex,
-          loading: false,
-          papers: this.props.paperList,
-        })
-      });
+    this.props.dispatch({
+      type: 'paper/fetchAllPaper',
+      payload: values
+    }).then(() => {
+      let BeginIndex = this.state.BeginIndex + pageSize;
+      this.setState({
+        BeginIndex,
+        loading: false,
+        papers: this.props.paperList,
+        tagPapers: [],
+      })
+    });
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ papers: nextProps.paperList });
+    this.setState({ tagPapers: nextProps.tagPapers });
   }
-
-  // load more
-  getData = () => {
-    const values = {
-      BeginIndex: this.state.BeginIndex,
-      PageSize: pageSize,
-      docType: "M",
-    };
-
-    this.props.dispatch({ type: 'paper/showAllPaper', payload: values })
-      .then(() => {
-        let BeginIndex = this.state.BeginIndex + pageSize;
-        let papers = this.state.papers;
-        this.props.paperList.forEach((v) => {
-          papers.push(v)
-        });
-        this.setState({
-          papers,
-          BeginIndex,
-          loadingMore: false,
-        })
-      });
-  };
 
   followPaper = (paperId) => {
     const data = {
@@ -73,12 +54,34 @@ class ShowAllPaper extends Component {
     })
   };
 
+  // load more
+  getData = (callback) => {
+    const values = {
+      BeginIndex: this.state.BeginIndex,
+      PageSize: pageSize,
+      token: this.props.token,
+    };
+
+    this.props.dispatch({
+      type: 'paper/fetchAllPaper',
+      payload: values,
+    }).then(() => {
+      callback();
+    })
+  };
+
   onLoadMore = () => {
     this.setState({
       loadingMore: true,
     });
     this.getData(() => {
-      this.setState({}, () => {
+      const BeginIndex = this.state.BeginIndex + pageSize;
+      const papers = this.state.papers.concat(this.props.paperList);
+      this.setState({
+        papers,
+        BeginIndex,
+        loadingMore: false,
+      }, () => {
         // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
         // In real scene, you can using public method of react-virtualized:
         // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
@@ -88,7 +91,9 @@ class ShowAllPaper extends Component {
   };
 
   render() {
-    const { loading, loadingMore, showLoadingMore, papers } = this.state;
+    const { loading, loadingMore, showLoadingMore, papers, tagPapers } = this.state;
+
+    const showPapers = tagPapers.length > 0 ? tagPapers : papers;
 
     const loadMore = showLoadingMore ? (
       <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
@@ -105,10 +110,15 @@ class ShowAllPaper extends Component {
           loading={loading}
           itemLayout="vertical"
           loadMore={loadMore}
-          dataSource={papers}
+          dataSource={showPapers}
           renderItem={item => (
             <List.Item key={item.doc_id}
-                       extra={<Button onClick={this.followPaper.bind(null, item.doc_id)}>关注</Button>}>
+                       extra={
+                         !!item.is_follow ?
+                           <Button onClick={this.followPaper.bind(null, item.doc_id)}>关注</Button> :
+                           <div>已关注</div>
+                       }
+            >
               <List.Item.Meta
                 title={<Link to={"/dashboard/paperDetail/" + item.doc_id}>{item.doc_title}</Link>}
                 description={item.doc_publish + " " + item.doc_author}
@@ -126,6 +136,7 @@ class ShowAllPaper extends Component {
 const mapStateToProps = (state) => {
   return {
     paperList: state.paper.papers,
+    tagPapers: state.paper.tagPapers,
     error: state.paper.error,
     token: state.user.account.token,
   };

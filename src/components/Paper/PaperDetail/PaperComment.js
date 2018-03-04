@@ -30,7 +30,7 @@ class PaperComment extends Component {
     return (
       <div>
         <List
-          header={<div className={styles}>评论</div>}
+          header={<div className={styles["paper-sub-title"]}>评论</div>}
           className={styles["loadmore-list"]}
           loading={loading}
           itemLayout="vertical"

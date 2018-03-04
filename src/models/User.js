@@ -5,6 +5,8 @@ import {
   fetchDynamicMessageNum,
   fetchDynamicMessage,
   fetchUserAvatar,
+  fetchUserInformation,
+  modifyUserInformation,
 } from '../services/User';
 import { storageTokenKey } from '../utils/constant';
 import { setLocalStorage, getLocalStorage } from '../utils/helper';
@@ -20,6 +22,7 @@ export default {
         userId: null,
         token: null,
       },
+      userInformation: {},
       dynamicMessageNum: 0,
       dynamicMessage: [],
       error: false,
@@ -36,7 +39,7 @@ export default {
       }
 
       history.listen(({ pathname }) => {
-        if (pathname === '/dashboard') {
+        if (pathname.includes('dashboard')) {
           dispatch({
             type: 'fetchDynamicMessageNum'
           });
@@ -79,7 +82,6 @@ export default {
           yield put({
             type: 'fetchUserAvatar',
             payload: {
-              userId: data.result.userId,
               token: data.result.token,
             }
           });
@@ -102,16 +104,8 @@ export default {
 
     // signUp
     * signUp({ payload }, { call, put }) {
-      const {
-        email, name, password, user_identity, user_phone, user_address,
-        user_education, user_brithday
-      } = payload;
 
-      const { data } = yield call(signUp, {
-        email, name, password, user_identity, user_phone, user_address,
-        user_education, user_brithday
-      });
-
+      const { data } = yield call(signUp, payload);
       if (data) {
         // sign up success
         if (data.status === "1") {
@@ -185,6 +179,42 @@ export default {
       //     })
       //   }
       // }
+    },
+
+    // fetch user's information
+    * fetchUserInformation({ payload }, { call, put }) {
+      const { data } = yield call(fetchUserInformation, { payload });
+      if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'fetchUserInformationFailed',
+          })
+        } else {
+          yield put({
+            type: 'fetchUserInformationSuccess',
+            payload: data.result.list[0],
+          })
+        }
+      }
+    },
+
+    // modify user's information
+    * modifyUserInformation({ payload }, { call, put }) {
+      const { data } = yield call(modifyUserInformation, { payload });
+      if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'modifyUserInformationFailed',
+          })
+        } else {
+          yield put({
+            type: 'modifyUserInformationSuccess',
+          });
+          yield put(routerRedux.push('/dashboard'))
+
+          // 还需返回相应的用户数据 token等
+        }
+      }
     },
 
   },
@@ -282,6 +312,35 @@ export default {
       return {
         ...state,
         inDashboard: false,
+      }
+    },
+
+    // fetch user information
+    fetchUserInformationSuccess(state, { payload }) {
+      return {
+        ...state,
+        error: false,
+        userInformation: payload,
+      }
+    },
+    fetchUserInformationFailed(state) {
+      return {
+        ...state,
+        error: true,
+      }
+    },
+
+    // modify user information
+    modifyUserInformationSuccess(state) {
+      return {
+        ...state,
+        error: false,
+      }
+    },
+    modifyUserInformationFailed(state) {
+      return {
+        ...state,
+        error: true,
       }
     },
 

@@ -145,7 +145,7 @@ const SignUp = ({
         </FormItem>
 
         <FormItem {...formItemLayout} label="身份证号">
-          {getFieldDecorator('user_identity', {
+          {getFieldDecorator('userIdentity', {
             rules: [
               {
                 required: true,
@@ -165,7 +165,7 @@ const SignUp = ({
         </FormItem>
 
         <FormItem {...formItemLayout} label="手机号码">
-          {getFieldDecorator('user_phone', {
+          {getFieldDecorator('userPhone', {
             rules: [
               {
                 required: true,
@@ -185,7 +185,7 @@ const SignUp = ({
         </FormItem>
 
         <FormItem {...formItemLayout} label="居住地址">
-          {getFieldDecorator('user_address', {
+          {getFieldDecorator('userAddress', {
             rules: [
               {
                 required: true,
@@ -205,7 +205,7 @@ const SignUp = ({
           label="教育程度"
           hasFeedback
         >
-          {getFieldDecorator('user_education', {
+          {getFieldDecorator('userEducation', {
             rules: [
               {
                 required: true,
@@ -225,7 +225,7 @@ const SignUp = ({
           {...formItemLayout}
           label="出生日期"
         >
-          {getFieldDecorator('user_brithday', {
+          {getFieldDecorator('userBrithday', {
             rules: [
               {
                 required: true,

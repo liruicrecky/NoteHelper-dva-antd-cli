@@ -3,20 +3,26 @@
   <component name="ChangeListManager">
     <list default="true" id="6f458501-5e11-4be1-a6bc-06b10708dea4" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/components/DynamicMessage/DynamicMessage.js" afterPath="$PROJECT_DIR$/src/components/DynamicMessage/DynamicMessage.js" />
+      <change beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
       <change beforePath="$PROJECT_DIR$/src/components/MainPage/MainPage.js" afterPath="$PROJECT_DIR$/src/components/MainPage/MainPage.js" />
       <change beforePath="$PROJECT_DIR$/src/components/MainPage/MainPage.less" afterPath="$PROJECT_DIR$/src/components/MainPage/MainPage.less" />
-      <change beforePath="$PROJECT_DIR$/src/components/Paper/AddPaper/AddPaper.js" afterPath="$PROJECT_DIR$/src/components/Paper/AddPaper/AddSinglePaper.js" />
+      <change beforePath="$PROJECT_DIR$/src/components/ModifyPersonalInformation/ModifyPersonalInformation.js" afterPath="$PROJECT_DIR$/src/components/ModifyPersonalInformation/ModifyPersonalInformation.js" />
+      <change beforePath="$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperComment.js" afterPath="$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperComment.js" />
       <change beforePath="$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperDetail.js" afterPath="$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperDetail.js" />
+      <change beforePath="$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperDetail.less" afterPath="$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperDetail.less" />
+      <change beforePath="$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaper.js" afterPath="$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaper.js" />
+      <change beforePath="$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaperTagPage.js" afterPath="$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaperTagPage.js" />
       <change beforePath="$PROJECT_DIR$/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.js" afterPath="$PROJECT_DIR$/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.js" />
-      <change beforePath="$PROJECT_DIR$/src/components/Paper/ShowMyFollowPaper/TagPage.js" afterPath="$PROJECT_DIR$/src/components/Paper/ShowMyFollowPaper/TagPage.js" />
+      <change beforePath="$PROJECT_DIR$/src/components/SignUp/SignUp.js" afterPath="$PROJECT_DIR$/src/components/SignUp/SignUp.js" />
       <change beforePath="$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardLayout.js" afterPath="$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardLayout.js" />
-      <change beforePath="$PROJECT_DIR$/src/components/layout/DashboardLayout/SideMenu.js" afterPath="$PROJECT_DIR$/src/components/layout/DashboardLayout/SideMenu.js" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardLayout.less" afterPath="$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardLayout.less" />
       <change beforePath="$PROJECT_DIR$/src/components/layout/MainLayout/Header.js" afterPath="$PROJECT_DIR$/src/components/layout/MainLayout/Header.js" />
       <change beforePath="$PROJECT_DIR$/src/models/Paper.js" afterPath="$PROJECT_DIR$/src/models/Paper.js" />
       <change beforePath="$PROJECT_DIR$/src/models/User.js" afterPath="$PROJECT_DIR$/src/models/User.js" />
       <change beforePath="$PROJECT_DIR$/src/services/Paper.js" afterPath="$PROJECT_DIR$/src/services/Paper.js" />
       <change beforePath="$PROJECT_DIR$/src/services/User.js" afterPath="$PROJECT_DIR$/src/services/User.js" />
+      <change beforePath="$PROJECT_DIR$/src/utils/helper.js" afterPath="$PROJECT_DIR$/src/utils/helper.js" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" afterPath="$PROJECT_DIR$/yarn.lock" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -30,59 +36,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AddPaperContainer.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/Paper/AddPaper/AddPaperContainer.js">
+      <file leaf-file-name="ShowAllPaper.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaper.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AddMultiPaper.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/components/Paper/AddPaper/AddMultiPaper.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="644">
-              <caret line="28" column="17" lean-forward="true" selection-start-line="28" selection-start-column="17" selection-end-line="28" selection-end-column="17" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AddSinglePaper.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/Paper/AddPaper/AddSinglePaper.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1265">
-              <caret line="121" column="17" lean-forward="false" selection-start-line="121" selection-start-column="7" selection-end-line="121" selection-end-column="17" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Paper.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/models/Paper.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
-              <caret line="189" column="50" lean-forward="true" selection-start-line="189" selection-start-column="50" selection-end-line="189" selection-end-column="50" />
-              <folding>
-                <element signature="e#0#240#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Paper.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/services/Paper.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="59" column="40" lean-forward="false" selection-start-line="74" selection-start-column="13" selection-end-line="74" selection-end-column="26" />
+            <state relative-caret-position="552">
+              <caret line="30" column="19" lean-forward="true" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -94,8 +52,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="JavaScript File" />
         <option value="Less File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -113,6 +71,11 @@
       <find>unFollowShowModal</find>
       <find>exportPaperReferenceAll</find>
       <find>fetchDynamicMessageNum</find>
+      <find>fetchUserAvatar</find>
+      <find>paperPDF</find>
+      <find>showList</find>
+      <find>fetchPaperByTag</find>
+      <find>fetchPaperByTagSuccess</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -121,22 +84,17 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/components/layout/MainLayout/MainLayout.js" />
-        <option value="$PROJECT_DIR$/src/components/layout/LoginSignUpLayout/index.js" />
         <option value="$PROJECT_DIR$/src/components/layout/MainLayout/MainLayout.less" />
         <option value="$PROJECT_DIR$/src/routes/Dashboard/Dashboard.less" />
         <option value="$PROJECT_DIR$/src/components/Modify/ModifyPersonalInformation.js" />
         <option value="$PROJECT_DIR$/src/components/layout/DashboardLayout/Sider.js" />
         <option value="$PROJECT_DIR$/src/components/layout/DashboardLayout/LeftSideMenu.js" />
         <option value="$PROJECT_DIR$/src/routes/Dashboard/Dashboard.js" />
-        <option value="$PROJECT_DIR$/src/components/ModifyPersonalInformation/ModifyPersonalInformation.js" />
         <option value="$PROJECT_DIR$/src/components/Paper/MyUploadPaper/MyuploadPaper.js" />
         <option value="$PROJECT_DIR$/src/utils/constant.js" />
         <option value="$PROJECT_DIR$/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.less" />
         <option value="$PROJECT_DIR$/src/components/layout/PaperDetailLayout/PaperDetailLayout.js" />
         <option value="$PROJECT_DIR$/src/routes/PaperDetail/PaperDetail.js" />
-        <option value="$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperDetail.less" />
-        <option value="$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardLayout.less" />
         <option value="$PROJECT_DIR$/src/components/Paper/UploadPaper/UploadPaper.js" />
         <option value="$PROJECT_DIR$/src/components/Login/Login.js" />
         <option value="$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperAbout.js" />
@@ -146,32 +104,37 @@
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/src/components/layout/LoginSignUpLayout/index.less" />
         <option value="$PROJECT_DIR$/src/components/layout/MainLayout/Header.less" />
-        <option value="$PROJECT_DIR$/src/utils/helper.js" />
-        <option value="$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperComment.js" />
         <option value="$PROJECT_DIR$/src/services/Tag.js" />
         <option value="$PROJECT_DIR$/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaperContainer.js" />
         <option value="$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaper.less" />
         <option value="$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaperContainer.js" />
-        <option value="$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaper.js" />
-        <option value="$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaperTagPage.js" />
         <option value="$PROJECT_DIR$/src/models/Tag.js" />
-        <option value="$PROJECT_DIR$/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.js" />
-        <option value="$PROJECT_DIR$/src/services/User.js" />
         <option value="$PROJECT_DIR$/src/components/Paper/ShowMyFollowPaper/TagPage.js" />
         <option value="$PROJECT_DIR$/src/components/Paper/AddPaper/AddPaper.js" />
         <option value="$PROJECT_DIR$/src/components/layout/DashboardLayout/SideMenu.js" />
-        <option value="$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardLayout.js" />
         <option value="$PROJECT_DIR$/src/components/DynamicMessage/DynamicMessage.js" />
-        <option value="$PROJECT_DIR$/src/components/MainPage/MainPage.less" />
-        <option value="$PROJECT_DIR$/src/models/User.js" />
-        <option value="$PROJECT_DIR$/src/components/layout/MainLayout/Header.js" />
-        <option value="$PROJECT_DIR$/src/components/MainPage/MainPage.js" />
         <option value="$PROJECT_DIR$/src/components/Paper/AddPaper/AddPaperContainer.js" />
         <option value="$PROJECT_DIR$/src/components/Paper/AddPaper/AddPaper.less" />
-        <option value="$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperDetail.js" />
         <option value="$PROJECT_DIR$/src/components/Paper/AddPaper/AddMultiPaper.js" />
+        <option value="$PROJECT_DIR$/src/components/SignUp/SignUp.js" />
+        <option value="$PROJECT_DIR$/src/components/ModifyPersonalInformation/ModifyPersonalInformation.js" />
+        <option value="$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperDetail.less" />
+        <option value="$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperComment.js" />
+        <option value="$PROJECT_DIR$/src/utils/helper.js" />
+        <option value="$PROJECT_DIR$/src/services/User.js" />
+        <option value="$PROJECT_DIR$/src/models/User.js" />
+        <option value="$PROJECT_DIR$/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.js" />
+        <option value="$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperDetail.js" />
+        <option value="$PROJECT_DIR$/src/components/MainPage/MainPage.less" />
         <option value="$PROJECT_DIR$/src/services/Paper.js" />
+        <option value="$PROJECT_DIR$/src/components/MainPage/MainPage.js" />
+        <option value="$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaper.js" />
         <option value="$PROJECT_DIR$/src/models/Paper.js" />
+        <option value="$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaperTagPage.js" />
+        <option value="$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardLayout.js" />
+        <option value="$PROJECT_DIR$/src/components/layout/MainLayout/Header.js" />
+        <option value="$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardLayout.less" />
+        <option value="$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardMain.js" />
       </list>
     </option>
   </component>
@@ -189,11 +152,11 @@
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="50" />
-    <option name="y" value="270" />
-    <option name="width" value="1870" />
-    <option name="height" value="930" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-42" />
+    <option name="y" value="64" />
+    <option name="width" value="1854" />
+    <option name="height" value="920" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -231,7 +194,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -263,7 +225,14 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="layout" type="462c0819:PsiDirectoryNode" />
-              <item name="LoginSignUpLayout" type="462c0819:PsiDirectoryNode" />
+              <item name="DashboardLayout" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="notehelper-cli-dva-antd" type="b2602c69:ProjectViewProjectNode" />
+              <item name="notehelper-cli-dva-antd" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="MainPage" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="notehelper-cli-dva-antd" type="b2602c69:ProjectViewProjectNode" />
@@ -278,7 +247,15 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="Paper" type="462c0819:PsiDirectoryNode" />
-              <item name="PaperDetail" type="462c0819:PsiDirectoryNode" />
+              <item name="ShowAllPaper" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="notehelper-cli-dva-antd" type="b2602c69:ProjectViewProjectNode" />
+              <item name="notehelper-cli-dva-antd" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="Paper" type="462c0819:PsiDirectoryNode" />
+              <item name="ShowMyFollowPaper" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="notehelper-cli-dva-antd" type="b2602c69:ProjectViewProjectNode" />
@@ -292,10 +269,17 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="services" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="notehelper-cli-dva-antd" type="b2602c69:ProjectViewProjectNode" />
+              <item name="notehelper-cli-dva-antd" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -311,7 +295,7 @@
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.selected.package.standard" value="" />
     <property name="list.type.of.created.stylesheet" value="Less" />
-    <property name="SearchEverywhereHistoryKey" value="papercomment&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/PaperDetail/PaperComment.js&#10;paperco&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/AddPaper/AddPaperContainer.js&#10;paperd&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/PaperDetail/PaperDetail.js&#10;add&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/AddPaper/AddSinglePaper.js&#10;tagpa&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/ShowMyFollowPaper/TagPage.js&#10;showmy&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.js&#10;paperde&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/PaperDetail/PaperDetail.js&#10;myf&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.js&#10;myfo&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.js&#10;deta&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/PaperDetail/PaperDetail.js" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/PaperDetail/PaperDetail.js&#10;paperd&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/PaperDetail/PaperDetail.js&#10;showf&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.js&#10;papercomment&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/PaperDetail/PaperComment.js&#10;paperco&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/AddPaper/AddPaperContainer.js&#10;add&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/AddPaper/AddSinglePaper.js&#10;tagpa&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/ShowMyFollowPaper/TagPage.js&#10;showmy&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.js&#10;paperde&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/PaperDetail/PaperDetail.js&#10;myf&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.js&#10;myfo&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.js&#10;deta&#9;FILE&#9;file:///home/akka/Code/notehelper-cli-dva-antd/src/components/Paper/PaperDetail/PaperDetail.js" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -370,23 +354,26 @@
       <workItem from="1520028378367" duration="1245000" />
       <workItem from="1520090373151" duration="244000" />
       <workItem from="1520061824927" duration="11275000" />
+      <workItem from="1520116896840" duration="4200000" />
+      <workItem from="1520121105549" duration="2502000" />
+      <workItem from="1520132162236" duration="10759000" />
+      <workItem from="1520146584180" duration="2447000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="215461000" />
+    <option name="totallyTimeSpent" value="235369000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="50" y="270" width="1922" height="1053" extended-state="7" />
-    <editor active="true" />
+    <frame x="-42" y="64" width="1922" height="1053" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18799368" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21169037" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -408,32 +395,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="7" />
+      <option name="time" value="8" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/components/DynamicMessage/DynamicMessage.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/SignUp/SignUp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="10" column="24" lean-forward="false" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/Login/Login.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/Login/Login.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
@@ -513,47 +479,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/helper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaperContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="20" column="14" lean-forward="true" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#41#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaperTagPage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="55" column="8" lean-forward="true" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="46" column="19" lean-forward="true" selection-start-line="44" selection-start-column="5" selection-end-line="46" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#41#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaperContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="18" column="34" lean-forward="false" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/models/Tag.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-864">
@@ -566,33 +491,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22">
           <caret line="26" column="3" lean-forward="false" selection-start-line="26" selection-start-column="3" selection-end-line="26" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/services/User.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="20" column="28" lean-forward="false" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/layout/MainLayout/MainLayout.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardLayout.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#26#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -619,82 +517,8 @@
         <state relative-caret-position="253">
           <caret line="11" column="23" lean-forward="true" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/SignUp/SignUp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-414">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Login/Login.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="44" column="4" lean-forward="true" selection-start-line="44" selection-start-column="4" selection-end-line="44" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/router.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="18" column="27" lean-forward="false" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/User.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="28" column="4" lean-forward="true" selection-start-line="28" selection-start-column="4" selection-end-line="51" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#40#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/layout/MainLayout/Header.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="566">
-          <caret line="96" column="20" lean-forward="true" selection-start-line="96" selection-start-column="20" selection-end-line="96" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/MainPage/MainPage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="758">
-          <caret line="111" column="12" lean-forward="false" selection-start-line="111" selection-start-column="4" selection-end-line="111" selection-end-column="12" />
-          <folding>
             <element signature="e#0#41#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6625">
-          <caret line="50" column="26" lean-forward="true" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-            <marker date="1519999788382" expanded="true" signature="6291:6501" ph="..." />
-            <marker date="1519999788382" expanded="true" signature="8532:11835" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperDetail.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
-          <caret line="26" column="16" lean-forward="false" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -702,7 +526,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="46">
           <caret line="2" column="1" lean-forward="false" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -710,15 +533,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/MainPage/MainPage.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="8" column="6" lean-forward="true" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -726,15 +540,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardLayout.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="18" column="1" lean-forward="true" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -742,7 +547,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
           <caret line="11" column="24" lean-forward="true" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -750,7 +554,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="437">
           <caret line="19" column="17" lean-forward="true" selection-start-line="19" selection-start-column="2" selection-end-line="19" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -758,73 +561,252 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperComment.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="61" column="49" lean-forward="false" selection-start-line="61" selection-start-column="30" selection-end-line="61" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperDetail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="89" column="21" lean-forward="false" selection-start-line="89" selection-start-column="2" selection-end-line="89" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Paper/AddPaper/AddSinglePaper.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1265">
+        <state relative-caret-position="804">
           <caret line="121" column="17" lean-forward="false" selection-start-line="121" selection-start-column="7" selection-end-line="121" selection-end-column="17" />
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/Paper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="189" column="50" lean-forward="true" selection-start-line="189" selection-start-column="50" selection-end-line="189" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#240#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/services/Paper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="59" column="40" lean-forward="false" selection-start-line="74" selection-start-column="13" selection-end-line="74" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Paper/AddPaper/AddPaperContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
+            <element signature="e#0#41#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Paper/AddPaper/AddMultiPaper.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="644">
-          <caret line="28" column="17" lean-forward="true" selection-start-line="28" selection-start-column="17" selection-end-line="28" selection-end-column="17" />
+        <state relative-caret-position="276">
+          <caret line="12" column="4" lean-forward="true" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#41#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Paper/AddPaper/AddPaperContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#41#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Login/Login.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="897">
+          <caret line="44" column="4" lean-forward="true" selection-start-line="44" selection-start-column="4" selection-end-line="44" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaperContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="20" column="14" lean-forward="true" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/SignUp/SignUp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="167" column="39" lean-forward="false" selection-start-line="167" selection-start-column="30" selection-end-line="167" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/helper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="11" column="9" lean-forward="false" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperComment.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="482">
+          <caret line="47" column="36" lean-forward="false" selection-start-line="47" selection-start-column="29" selection-end-line="47" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/ModifyPersonalInformation/ModifyPersonalInformation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="55" column="9" lean-forward="true" selection-start-line="55" selection-start-column="9" selection-end-line="55" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperDetail.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="643">
+          <caret line="29" column="16" lean-forward="false" selection-start-line="29" selection-start-column="1" selection-end-line="29" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Paper/ShowMyFollowPaper/ShowMyFollowPaper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="226" column="6" lean-forward="true" selection-start-line="219" selection-start-column="3" selection-end-line="226" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#41#0" expanded="false" />
+            <marker date="1520140285248" expanded="true" signature="6633:6843" ph="..." />
+            <marker date="1520140285248" expanded="true" signature="8865:12168" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Paper/PaperDetail/PaperDetail.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="477">
+          <caret line="268" column="51" lean-forward="false" selection-start-line="268" selection-start-column="51" selection-end-line="268" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#41#0" expanded="false" />
+            <element signature="e#315#355#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/User.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="34" column="35" lean-forward="false" selection-start-line="34" selection-start-column="35" selection-end-line="34" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/User.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#40#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/Dashboard/Dashboard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="11" column="27" lean-forward="false" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#26#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaperContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaperTagPage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1081">
+          <caret line="50" column="12" lean-forward="false" selection-start-line="50" selection-start-column="12" selection-end-line="50" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/layout/MainLayout/MainLayout.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/router.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="1" column="15" lean-forward="false" selection-start-line="1" selection-start-column="9" selection-end-line="1" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/MainPage/MainPage.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardLayout.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="662">
+          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardMain.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1081">
+          <caret line="47" column="4" lean-forward="false" selection-start-line="47" selection-start-column="4" selection-end-line="47" selection-end-column="4" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/MainPage/MainPage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="42" column="4" lean-forward="true" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/Paper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="574">
+          <caret line="90" column="2" lean-forward="false" selection-start-line="90" selection-start-column="2" selection-end-line="90" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/Paper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1782">
+          <caret line="298" column="6" lean-forward="true" selection-start-line="298" selection-start-column="6" selection-end-line="298" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#288#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/layout/MainLayout/Header.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="28" column="13" lean-forward="true" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/layout/DashboardLayout/DashboardLayout.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="43" column="43" lean-forward="true" selection-start-line="43" selection-start-column="43" selection-end-line="43" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Paper/ShowAllPaper/ShowAllPaper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="30" column="19" lean-forward="true" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>

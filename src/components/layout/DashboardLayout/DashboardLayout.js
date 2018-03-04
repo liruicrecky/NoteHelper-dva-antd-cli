@@ -5,6 +5,7 @@ import { Route, Switch } from 'dva/router';
 
 import styles from './DashboardLayout.less';
 import SideMenu from './SideMenu';
+import DashboardMain from './DashboardMain';
 import DynamicMessage from '../../DynamicMessage/DynamicMessage';
 import ModifyPersonalInformationComponent from '../../ModifyPersonalInformation/ModifyPersonalInformation';
 import ShowAllPaperContainer from '../../Paper/ShowAllPaper/ShowAllPaperContainer';
@@ -41,6 +42,7 @@ class DashboardLayout extends React.Component {
             />
           </Header>
           <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: '90vh' }}>
+
             <Switch>
               <Route path="/dashboard/dynamicMessage" component={DynamicMessage}/>
               <Route path="/dashboard/modifyPersonalInformation" component={ModifyPersonalInformationComponent}/>
@@ -48,6 +50,7 @@ class DashboardLayout extends React.Component {
               <Route path="/dashboard/showMyFollowPaper" component={ShowMyFollowPaperContainer}/>
               <Route path="/dashboard/paperDetail/:paperId" component={PaperDetail}/>
               <Route path="/dashboard/addPaper" component={AddPaper}/>
+              <Route path="/dashboard/" component={DashboardMain}/>
             </Switch>
           </Content>
         </Layout>
