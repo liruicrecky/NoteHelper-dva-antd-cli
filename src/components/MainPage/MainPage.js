@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
-import { Row, Col, Input, Button, Spin, List, Tag } from 'antd';
+import { Row, Col, Input, Button, Spin, List, Tag, Divider } from 'antd';
 
 import styles from './MainPage.less';
 
@@ -20,16 +20,21 @@ class MainPage extends Component {
   componentDidMount() {
     // if login, then fetch top ten papers
     const props = this.props;
+    const state = this.state;
 
     if (props.isLogin) {
-      props.dispatch({
-        type: 'paper/fetchTopTenPapers',
-        payload: {
-          token: props.token,
-        }
-      }).then(() => {
-
-      })
+      if (state.papers.length === 0) {
+        props.dispatch({
+          type: 'paper/fetchTopTenPapers',
+          payload: {
+            token: props.token,
+          }
+        }).then(() => {
+          this.setState({
+            papers: this.props.papers,
+          })
+        })
+      }
     }
   }
 
@@ -39,10 +44,15 @@ class MainPage extends Component {
       payload: {
         keyword: value,
       },
+    }).then(() => {
+      this.setState({
+        papers: this.props.papers,
+      })
     })
   };
 
   followPaper = (paperId) => {
+    const state = this.state;
     const data = {
       docId: paperId,
       token: this.props.token,
@@ -50,14 +60,58 @@ class MainPage extends Component {
     this.props.dispatch({
       type: 'paper/followPaper',
       payload: data,
+    }).then(() => {
+      const papers = state.papers;
+      papers.find((v) => v.doc_id === paperId).is_follow = true;
+
+      this.setState({
+        papers,
+      })
+
     })
   };
+
+  unFollowPaper = (paperId) => {
+    const state = this.state;
+    const data = {
+      docId: paperId,
+      token: this.props.token,
+    };
+    this.props.dispatch({
+      type: 'paper/unFollowPaper',
+      payload: data,
+    }).then(() => {
+      const papers = state.papers;
+      papers.find((v) => v.doc_id === paperId).is_follow = false
+
+      this.setState({
+        papers,
+      })
+
+    })
+  };
+
+
+  /*
+  <Row type="flex" justify="center" style={{ marginTop: "5vh" }}>
+  <div className={styles["tag-title"]}>热门标签</div>
+  </Row>
+
+  <Row type="flex" justify="center" style={{ marginTop: "2vh" }}>
+  <Tag className={styles["tag"]} color="magenta">C++</Tag>
+  <Tag className={styles["tag"]} color="red">red</Tag>
+  <Tag className={styles["tag"]} color="volcano">volcano</Tag>
+  <Tag className={styles["tag"]} color="orange">orange</Tag>
+  <Tag className={styles["tag"]} color="gold">gold</Tag>
+  </Row>
+  */
 
 
   render() {
 
     const { loading, loadingMore, showLoadingMore } = this.state;
-    const { papers } = this.props;
+    const { papers } = this.state;
+
 
     const isTopTen = papers.length === 10;
 
@@ -80,21 +134,15 @@ class MainPage extends Component {
           </Col>
         </Row>
 
-        <Row type="flex" justify="center" style={{ marginTop: "5vh" }}>
-          <div className={styles["tag-title"]}>热门标签</div>
-        </Row>
-
-        <Row type="flex" justify="center" style={{ marginTop: "2vh" }}>
-          <Tag className={styles["tag"]} color="magenta">C++</Tag>
-          <Tag className={styles["tag"]} color="red">red</Tag>
-          <Tag className={styles["tag"]} color="volcano">volcano</Tag>
-          <Tag className={styles["tag"]} color="orange">orange</Tag>
-          <Tag className={styles["tag"]} color="gold">gold</Tag>
-        </Row>
 
         <Row type="flex" justify="center" style={{ marginTop: "5vh" }}>
           <Col span={16}>
-            {isTopTen && <span className={styles["top-ten"]}>最新上传Top10</span>}
+            {isTopTen &&
+            <div>
+              <span className={styles["top-ten"]}>最新上传Top10</span>
+              <Divider/>
+            </div>
+            }
             <List
               className={styles["loadmore-list"]}
               loading={loading}
@@ -103,7 +151,13 @@ class MainPage extends Component {
               dataSource={papers}
               renderItem={item => (
                 <List.Item key={item.doc_id}
-                           extra={<Button onClick={this.followPaper.bind(null, item.doc_id)}>关注</Button>}>
+                           extra={
+                             item.is_follow ?
+                               <Button onClick={this.unFollowPaper.bind(null, item.doc_id)} type="primary">已关注</Button>
+                               :
+                               <Button onClick={this.followPaper.bind(null, item.doc_id)}>关注</Button>
+                           }
+                >
                   <List.Item.Meta
                     title={<Link to={"/dashboard/paperDetail/" + item.doc_id}>{item.doc_title}</Link>}
                     description={item.doc_publish + " " + item.doc_author}

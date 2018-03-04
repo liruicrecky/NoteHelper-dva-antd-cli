@@ -20,7 +20,7 @@ class ShowMyFollowPaper extends Component {
     addPaperToTagVisible: false,
     confirmLoading: false,
     docId: "",
-    papers: [],
+    //  papers: [],
     selectTagsChildren: [],
     selectTags: [],
     // check state
@@ -28,50 +28,50 @@ class ShowMyFollowPaper extends Component {
     indeterminate: true,
     checkAll: false,
     // page pagination
-    BeginIndex: 0,
+    //  BeginIndex: 0,
   };
 
   // load data at first time
   componentDidMount() {
-    const values = {
-      token: this.props.token,
-      BeginIndex: 0,
-      PageSize: pageSize,
-    };
+    /* const values = {
+       token: this.props.token,
+       BeginIndex: 0,
+       PageSize: pageSize,
+     };
 
-    this.props.dispatch({
-      type: 'paper/fetchAllFollowPaper',
-      payload: values
-    }).then(() => {
+     this.props.dispatch({
+       type: 'paper/fetchAllFollowPaper',
+       payload: values
+     }).then(() => {*/
 
-      // paper
-      let BeginIndex = this.state.BeginIndex + pageSize;
+    // paper
+    //  let BeginIndex = this..BeginIndex + pageSize;
 
-      // select tag
-      const customTagNames = this.props.customTagNames;
-      const selectTagsChildren = [];
-      customTagNames.forEach((v) => {
-        selectTagsChildren.push(<Option key={v}>{v}</Option>);
-      });
-
-      // paper id
-      const paperList = this.props.paperList;
-      paperList.forEach((v) => {
-        v.checked = false
-      });
-
-      this.setState({
-        loading: false,
-        papers: paperList,
-        BeginIndex,
-        selectTagsChildren,
-      })
+    // select tag
+    const customTagNames = this.props.customTagNames;
+    const selectTagsChildren = [];
+    customTagNames.forEach((v) => {
+      selectTagsChildren.push(<Option key={v}>{v}</Option>);
     });
+
+    // paper id
+    const paperList = this.props.papers;
+    paperList.forEach((v) => {
+      v.checked = false
+    });
+
+    this.setState({
+      loading: false,
+      // papers: paperList,
+      // BeginIndex,
+      // selectTagsChildren,
+    })
+    // });
   }
 
-/*  componentWillReceiveProps(nextProps) {
-    this.setState({ papers: nextProps.paperList });
-  }*/
+  /*  componentWillReceiveProps(nextProps) {
+      this.setState({ papers: nextProps.paperList });
+    }*/
 
   // unFollow paper modal
   unFollowShowModal = (paperId) => {
@@ -103,7 +103,7 @@ class ShowMyFollowPaper extends Component {
   // load more
   getData = (callback) => {
     const values = {
-      BeginIndex: this.state.BeginIndex,
+      BeginIndex: this.props.BeginIndex,
       PageSize: pageSize,
       token: this.props.token,
     };
@@ -122,12 +122,16 @@ class ShowMyFollowPaper extends Component {
     });
     this.getData(() => {
 
-      const BeginIndex = this.state.BeginIndex + pageSize;
-      const papers = this.state.papers.concat(this.props.paperList);
+      const BeginIndex = this.props.BeginIndex + pageSize;
+
+      const papers = this.props.papers.concat(this.props.paperList);
+      this.props.setPapers(papers);
+      this.props.setBeginIndex(BeginIndex);
+
 
       this.setState({
-        papers,
-        BeginIndex,
+        //  papers,
+        //  BeginIndex,
         loadingMore: false,
       }, () => {
         // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
@@ -148,9 +152,12 @@ class ShowMyFollowPaper extends Component {
       type: 'paper/unFollowPaper',
       payload: data,
     }).then(() => {
-      this.setState({
+
+      this.props.setPapers(this.props.papers.filter((v) => v.doc_id !== paperId));
+
+      /*this.setState({
         papers: this.state.papers.filter((v) => v.doc_id !== paperId)
-      })
+      })*/
     })
   };
 
@@ -217,24 +224,22 @@ class ShowMyFollowPaper extends Component {
   // down pdf
   downPaperAsPDF = (paperId) => {
 
-    const postUrl = '/api/GetPdfUrl?docId=' + paperId;
-    axios.get(postUrl, {
+    const postUrl = '/api/showPdf?docId=' + paperId;
+    /*axios.get(postUrl, {
       headers: {
         'Token': this.props.token,
       }
     }).then(() => {
 
+    })*/
+    axios.get(postUrl, {
+      responseType: "blob",
+      headers: {
+        'token': this.props.token,
+      }
+    }).then((response) => {
+      saveAsFile(response.data, "pdf", "1")
     })
-    /*
-        axios.post(postUrl, {
-          responseType: "blob",
-        }, {
-          headers: {
-            'token': this.props.token,
-          }
-        }).then((response) => {
-          saveAsFile(response.data, "pdf", "1")
-        })*/
 
   };
 
@@ -307,7 +312,8 @@ class ShowMyFollowPaper extends Component {
     console.log("paperId ", paperId);
     console.log("e ", e);
     e.preventDefault();
-    const { papers, checkedList } = this.state;
+    const { checkedList } = this.state;
+    const { papers } = this.props;
     let checkAll = false;
 
     if (e.target.checked) {
@@ -333,7 +339,8 @@ class ShowMyFollowPaper extends Component {
   };
 
   onCheckAllChange = (e) => {
-    const { papers, checkedList } = this.state;
+    const { checkedList } = this.state;
+    const { papers } = this.props;
 
     checkedList.splice(0, checkedList.length);
 
@@ -357,8 +364,10 @@ class ShowMyFollowPaper extends Component {
   };
 
   render() {
-    const { loading, loadingMore, showLoadingMore, papers, selectTagsChildren } = this.state;
+    const { loading, loadingMore, showLoadingMore, selectTagsChildren } = this.state;
     const { unFollowVisible, addPaperToTagVisible, confirmLoading } = this.state;
+
+    const { papers } = this.props;
 
     const loadMore = showLoadingMore ? (
       <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>

@@ -54,7 +54,11 @@ export const fetchPaperByTag = ({ payload }) => {
 
 export const fetchPaperInformation = ({ payload }) => {
   const getUrl = '/api/showDocInformation?docId=' + payload.docId;
-  return axios.get(getUrl);
+  return axios.get(getUrl, {
+    headers: {
+      token: payload.token,
+    }
+  });
 };
 
 export const fetchPaperComment = ({ payload }) => {

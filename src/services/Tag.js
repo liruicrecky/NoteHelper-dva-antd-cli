@@ -39,10 +39,23 @@ export const deleteCustomTag = ({ payload }) => {
   })
 };
 
-export const addPaperToTag = ({ payload }) => {
+export const deletePaperFromCustomTag = ({ payload }) => {
 
-  console.log("payload: ", payload);
-  const { tagId, docId, token } = payload;
+  const { tagId, token, docId } = payload;
+
+  const postUrl = '/api/removeCustomDoc?tagId=' + tagId + '&docId=' + docId;
+
+  return axios.post(postUrl, null, {
+    headers: {
+      'token': token,
+    }
+  })
+};
+
+export const addPaperToTag = ({ postData }) => {
+
+  console.log("payload: ", postData);
+  const { tagId, docId, token } = postData;
   const data = {
     docId: docId,
     tagId: tagId,

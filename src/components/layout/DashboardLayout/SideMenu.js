@@ -67,10 +67,10 @@ class SideMenu extends Component {
                 <span>我关注的论文</span>
               </NavLink>
             </Menu.Item>
-            <Menu.Item key="4">
+          {/*  <Menu.Item key="4">
               <Icon type="upload"/>
               <span>我创建的论文</span>
-            </Menu.Item>
+            </Menu.Item>*/}
           </MenuItemGroup>
         </Menu>
       </Sider>

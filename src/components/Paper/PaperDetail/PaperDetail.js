@@ -38,6 +38,8 @@ class PaperDetail extends Component {
     pageNumber: 1,
     visible: false,
     paperPDFUrl: "",
+    // paper information
+    paperInformation: {},
   };
 
   // load data at first time
@@ -45,14 +47,19 @@ class PaperDetail extends Component {
 
     // get paper id from params and set to state
     const { paperId } = this.props.match.params;
-    this.setState({ paperId: paperId });
+    // this.setState({ paperId: paperId });
 
     // get paper information
     this.props.dispatch({
       type: 'paper/fetchPaperInformation',
       payload: {
         docId: paperId,
+        token: this.props.account.token,
       }
+    }).then(() => {
+      this.setState({
+        paperInformation: this.props.paperInformation,
+      })
     });
 
     // get paper comment
@@ -73,20 +80,20 @@ class PaperDetail extends Component {
       });
 
     // get tags
-    const data = {
-      token: this.props.account.token,
-    };
+    /*   const data = {
+         token: this.props.account.token,
+       };
 
-    this.props.dispatch({ type: 'tag/fetchCustomTag', payload: data })
-      .then(() => {
-        const customTags = this.props.customTags;
-        const customTagNames = this.props.customTagNames;
+       this.props.dispatch({ type: 'tag/fetchCustomTag', payload: data })
+         .then(() => {
+           const customTags = this.props.customTags;
+           const customTagNames = this.props.customTagNames;
 
-        this.setState({
-          customTags,
-          customTagNames,
-        })
-      });
+           this.setState({
+             customTags,
+             customTagNames,
+           })
+         });*/
   }
 
   // comment function
@@ -106,30 +113,20 @@ class PaperDetail extends Component {
     this.props.dispatch({
       type: 'paper/commentPaper',
       payload: data,
-    }).then(() => {
-
     })
   };
 
-  getData = () => {
+  getData = (callback) => {
+    const { paperId } = this.props.match.params;
     const values = {
       BeginIndex: this.state.BeginIndex,
       PageSize: pageSize,
-      docId: this.state.paperId,
+      docId: paperId,
     };
 
     this.props.dispatch({ type: 'paper/fetchPaperComment', payload: values })
       .then(() => {
-        let BeginIndex = this.state.BeginIndex + pageSize;
-        let comments = this.state.comments;
-        this.props.comments.forEach((v) => {
-          comments.push(v)
-        });
-        this.setState({
-          BeginIndex,
-          loadingMore: false,
-          comments,
-        })
+        callback()
       });
   };
 
@@ -137,8 +134,19 @@ class PaperDetail extends Component {
     this.setState({
       loadingMore: true,
     });
+
     this.getData(() => {
-      this.setState({}, () => {
+      let BeginIndex = this.state.BeginIndex + pageSize;
+      let comments = this.state.comments;
+      this.props.comments.forEach((v) => {
+        comments.push(v)
+      });
+
+      this.setState({
+        BeginIndex,
+        loadingMore: false,
+        comments,
+      }, () => {
         // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
         // In real scene, you can using public method of react-virtualized:
         // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
@@ -181,23 +189,24 @@ class PaperDetail extends Component {
   };
 
   // tags
-  tagHandleClose = (removedTagName) => {
+  tagHandleClose = (tagId) => {
+    const { paperId } = this.props.match.params;
 
-    const removeTag = this.state.customTags.find(v => v.tag_name === removedTagName);
     const data = {
-      tagId: removeTag.tag_id,
-      token: this.props.token,
+      tagId: tagId,
+      docId: paperId,
+      token: this.props.account.token,
     };
 
-    const customTagNames = this.state.customTagNames.filter(tag => tag !== removedTagName);
-    const customTags = this.state.customTags.filter(tag => tag.tag_name !== removedTagName);
+    // const customTagNames = this.state.customTagNames.filter(tag => tag !== removedTagName);
+    // const customTags = this.state.customTags.filter(tag => tag.tag_name !== removedTagName);
 
-    this.props.dispatch({ type: 'tag/deleteCustomTag', payload: data })
+    this.props.dispatch({ type: 'tag/deletePaperFromCustomTag', payload: data })
       .then(() => {
 
       });
 
-    this.setState({ customTagNames, customTags });
+    // this.setState({ customTagNames, customTags });
   };
 
   tagShowInput = () => {
@@ -210,36 +219,42 @@ class PaperDetail extends Component {
 
   tagHandleInputConfirm = () => {
     const state = this.state;
+    const { paperId } = this.props.match.params;
+
     const inputValue = state.inputValue;
-    let customTagNames = state.customTagNames;
-    if (inputValue && customTagNames.indexOf(inputValue) === -1) {
-      customTagNames = [...customTagNames, inputValue];
-    }
+ /*   let paperInformation = state.paperInformation;
+     let customTagNames = state.customTagNames;
+     if (inputValue && customTagNames.indexOf(inputValue) === -1) {
+       customTagNames = [...customTagNames, inputValue];
+     }*/
 
     const data = {
       tagName: inputValue,
-      token: this.props.token,
+      docId: paperId,
+      token: this.props.account.token,
     };
 
     this.props.dispatch({
-      type: 'tag/addCustomTag',
+      type: 'tag/createTagAndAddPaper',
       payload: data,
-    }).then(() =>
+    }).then(() => {
+
+      let paperInformation = state.paperInformation;
+      const newTag = {
+        tag_name: inputValue,
+        tag_id: this.props.tagId,
+      };
+      paperInformation.custom.push(newTag);
       this.setState({
-        customTagNames,
+        paperInformation,
         inputVisible: false,
         inputValue: '',
-      }))
+      })
+    })
 
   };
 
   tagSaveInputRef = input => this.input = input;
-
-  // select
-  selectHandleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-
 
   // pdf
   onDocumentLoad = ({ numPages }) => {
@@ -288,11 +303,55 @@ class PaperDetail extends Component {
     });
   };
 
+  // follow paper
+  followPaper = (paperId) => {
+    const state = this.state;
+    const data = {
+      docId: paperId,
+      token: this.props.account.token,
+    };
+    this.props.dispatch({
+      type: 'paper/followPaper',
+      payload: data,
+    }).then(() => {
+      const paperInformation = state.paperInformation;
+
+      paperInformation.is_follow = true;
+
+      this.setState({
+        paperInformation,
+      })
+
+    })
+  };
+
+  unFollowPaper = (paperId) => {
+    const state = this.state;
+    const data = {
+      docId: paperId,
+      token: this.props.account.token,
+    };
+    this.props.dispatch({
+      type: 'paper/unFollowPaper',
+      payload: data,
+    }).then(() => {
+      const paperInformation = state.paperInformation;
+      paperInformation.is_follow = false;
+
+      this.setState({
+        paperInformation,
+      })
+
+    })
+  };
+
 
   render() {
 
     // paper information
-    const { paperInformation } = this.props;
+    const { paperInformationPublicTags, paperInformationUserTags } = this.props;
+
+    const { paperInformation } = this.state;
 
     // comment
     const { loading, comments, loadingMore, showLoadingMore, rateValue } = this.state;
@@ -348,7 +407,7 @@ class PaperDetail extends Component {
 
               <Col span={4}>
                 <div>
-                  <Button type="primary" onClick={this.showModalPDF}>浏览文献</Button>
+                  {/*<Button type="primary" onClick={this.showModalPDF}>浏览文献</Button>*/}
                   <Modal
                     visible={visible}
                     onOk={this.handleOkPDF}
@@ -389,9 +448,15 @@ class PaperDetail extends Component {
 
               <Panel header="关于" key="1">
                 <div>
-                  <Button type="primary" size="small">
-                    <Icon type="tag"/>已关注
-                  </Button>
+                  {
+                    paperInformation.is_follow ?
+                      <Button size="small" onClick={this.unFollowPaper.bind(null, paperInformation.doc_id)}
+                              type="primary">
+                        <Icon type="tag"/>已关注</Button>
+                      :
+                      <Button size="small" onClick={this.followPaper.bind(null, paperInformation.doc_id)}>
+                        <Icon type="tag"/>关注</Button>
+                  }
 
                   <Upload {...uploadProps}>
                     <Button type="primary" size="small" className={styles["button-right"]}>
@@ -407,23 +472,35 @@ class PaperDetail extends Component {
                   </span>
                 </div>
                 <Divider/>
-                <div>{paperInformation.doc_publish}</div>
                 <div> {paperInformation.doc_author}</div>
+                <div>{paperInformation.doc_publish}</div>
+
+                <Divider/>
+                <div style={{ fontSize: '1.2em', marginBottom: '1vh' }}>公共标签</div>
+                {paperInformationPublicTags.map((tag, index) => {
+                  const isLongTag = tag.tag_name.length > 20;
+                  const tagElem = (
+                    <Tag key={tag.tag_id} closable={false}>
+                      {isLongTag ? `${tag.tag_name.slice(0, 20)}...` : tag.tag_name}
+                    </Tag>
+                  );
+                  return isLongTag ? <Tooltip title={tag.tag_name} key={tag.tag_id}>{tagElem}</Tooltip> : tagElem;
+                })}
 
               </Panel>
 
               <Panel header="自定义标签" key="2">
 
                 <div>
-                  {customTagNames.map((tag, index) => {
-                    const isLongTag = tag.length > 20;
+                  {paperInformationUserTags.map((tag, index) => {
+                    const isLongTag = tag.tag_name.length > 20;
                     const tagElem = (
-                      <Tag key={tag} closable={true} style={{ marginBottom: "5px" }}
-                           afterClose={() => this.tagHandleClose(tag)}>
-                        {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+                      <Tag key={tag.tag_id} closable={true} style={{ marginBottom: "5px" }}
+                           afterClose={() => this.tagHandleClose(tag.tag_id)}>
+                        {isLongTag ? `${tag.tag_name.slice(0, 20)}...` : tag.tag_name}
                       </Tag>
                     );
-                    return isLongTag ? <Tooltip title={tag} key={tag}>{tagElem}</Tooltip> : tagElem;
+                    return isLongTag ? <Tooltip title={tag.tag_name} key={tag.tag_id}>{tagElem}</Tooltip> : tagElem;
                   })}
                   {inputVisible && (
                     <Input
@@ -446,6 +523,7 @@ class PaperDetail extends Component {
                     </Tag>
                   )}
                 </div>
+
               </Panel>
             </Collapse>
 
@@ -461,6 +539,9 @@ const mapStateToProps = (state) => {
     customTags: state.tag.customTags,
     customTagNames: state.tag.customTagNames,
     paperInformation: state.paper.paperInformation,
+    paperInformationPublicTags: state.paper.paperInformationPublicTags,
+    paperInformationUserTags: state.paper.paperInformationUserTags,
+    tagId: state.tag.tagId,
     comments: state.paper.comments,
     error: state.paper.error,
     account: state.user.account,

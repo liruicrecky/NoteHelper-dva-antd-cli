@@ -4,6 +4,7 @@ import {
   fetchTag,
   deleteCustomTag,
   addPaperToTag,
+  deletePaperFromCustomTag,
 } from '../services/Tag';
 
 export default {
@@ -14,6 +15,7 @@ export default {
       customTagNames: [],
       publicTags: [],
       publicTagNames: [],
+      tagId: "",
       error: false,
     },
   subscriptions: {},
@@ -34,6 +36,29 @@ export default {
           });
         }
       }
+    },
+
+    // create a tag and add paper to this tag
+    * createTagAndAddPaper({ payload }, { call, put }) {
+      // create a tag
+      yield call(addCustomTag, { payload });
+
+      const { data } = yield call(fetchCustomTag, { payload });
+
+      const tagList = data.result.list;
+      const tagId = tagList.find((v) => v.tag_name === payload.tagName).tag_id;
+
+      const postData = {
+        tagId: tagId,
+        docId: payload.docId,
+        token: payload.token,
+      };
+      // add tag to paper
+      yield call(addPaperToTag, { postData });
+      yield put({
+        type: 'createTagAndAddPaperSuccess',
+        payload: tagId,
+      });
     },
 
     // fetch custom tags
@@ -73,6 +98,23 @@ export default {
     // delete custom tag
     * deleteCustomTag({ payload }, { call, put }) {
       const { data } = yield call(deleteCustomTag, { payload });
+      if (data) {
+        if (data.status !== "1") {
+          yield put({
+            type: 'fetchCustomTagFailed'
+          })
+        } else {
+          yield put({
+            type: 'fetchCustomTagSuccess',
+            payload: data.result.list,
+          });
+        }
+      }
+    },
+
+    // delete paper from tag
+    * deletePaperFromCustomTag({ payload }, { call, put }) {
+      const { data } = yield call(deletePaperFromCustomTag, { payload });
       console.log("data: ", data);
       // if (data) {
       //   if (data.status !== "1") {
@@ -87,6 +129,7 @@ export default {
       //   }
       // }
     },
+
 
     // add paper to tag
     * addPaperToTag({ payload }, { call, put }) {
@@ -155,6 +198,15 @@ export default {
       return {
         ...state,
         error: true,
+      }
+    },
+
+    // create a tag and add paper to this tag
+    createTagAndAddPaperSuccess(state, { payload }) {
+      return {
+        ...state,
+        error: true,
+        tagId: payload,
       }
     },
 

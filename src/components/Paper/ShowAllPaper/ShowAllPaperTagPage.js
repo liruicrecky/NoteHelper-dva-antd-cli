@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Tag, Divider } from 'antd';
-import { pageSize } from "../../../utils/constant";
 
 const CheckableTag = Tag.CheckableTag;
 
@@ -38,13 +37,11 @@ class ShowAllPaperTagPage extends Component {
       selectedTags.filter(t => t !== tag);*/
     const nextSelectedTags = checked ? [tag] : [];
 
-    const tagId = this.state.publicTags.find(v => v.tag_name === tag).tag_id;
-
     if (checked) {
       this.props.dispatch({
         type: 'paper/fetchPaperByTag',
         payload: {
-          tagId: tagId,
+          tagId: tag.tag_id,
           token: this.props.token,
         }
       });
@@ -58,24 +55,27 @@ class ShowAllPaperTagPage extends Component {
   }
 
   render() {
-    const { publicTagNames, selectedTags } = this.state;
+    const { publicTags, selectedTags } = this.state;
+
     return (
       <div>
-        <span style={{ fontSize: '16px' }}>公共标签</span>
-        <Divider style={{ marginTop: "1px", marginBottom: "5px" }}/>
+        <span style={{ fontSize: '1.4em' }}>公共标签</span>
+        <Divider style={{ marginTop: "1px", marginBottom: "1vh" }}/>
 
         <div>
-          {publicTagNames.map(tag => (
-            <CheckableTag
-              key={tag}
+          {publicTags.map(tag => (
+            < CheckableTag
+              key={tag.tag_name}
               checked={selectedTags.indexOf(tag) > -1}
               onChange={checked => this.publicTagHandleChange(tag, checked)}
+              style={{ marginBottom: '1vh' }}
             >
-              {tag}
+              <div style={{ fontSize: '1.3em' }}>
+                {tag.tag_name} | {tag.count}
+              </div>
             </CheckableTag>
           ))}
         </div>
-
       </div>
     );
   }
@@ -83,8 +83,6 @@ class ShowAllPaperTagPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    customTags: state.tag.customTags,
-    customTagNames: state.tag.customTagNames,
     publicTags: state.tag.publicTags,
     publicTagNames: state.tag.publicTagNames,
     token: state.user.account.token,

@@ -44,6 +44,7 @@ class ShowAllPaper extends Component {
   }
 
   followPaper = (paperId) => {
+    const state = this.state;
     const data = {
       docId: paperId,
       token: this.props.token,
@@ -51,6 +52,50 @@ class ShowAllPaper extends Component {
     this.props.dispatch({
       type: 'paper/followPaper',
       payload: data,
+    }).then(() => {
+      const papers = state.papers;
+      const tagPapers = state.papers;
+
+      let paper = papers.find((v) => v.doc_id === paperId);
+      if (paper === null) {
+        tagPapers.find((v) => v.doc_id === paperId).is_follow = true
+      } else {
+        papers.find((v) => v.doc_id === paperId).is_follow = true
+      }
+
+      this.setState({
+        papers,
+        tagPapers
+      })
+
+    })
+  };
+
+  unFollowPaper = (paperId) => {
+    const state = this.state;
+    const data = {
+      docId: paperId,
+      token: this.props.token,
+    };
+    this.props.dispatch({
+      type: 'paper/unFollowPaper',
+      payload: data,
+    }).then(() => {
+      const papers = state.papers;
+      const tagPapers = state.papers;
+
+      let paper = papers.find((v) => v.doc_id === paperId);
+      if (paper === null) {
+        tagPapers.find((v) => v.doc_id === paperId).is_follow = false;
+      } else {
+        papers.find((v) => v.doc_id === paperId).is_follow = false
+      }
+
+      this.setState({
+        papers,
+        tagPapers
+      })
+
     })
   };
 
@@ -114,9 +159,10 @@ class ShowAllPaper extends Component {
           renderItem={item => (
             <List.Item key={item.doc_id}
                        extra={
-                         !!item.is_follow ?
-                           <Button onClick={this.followPaper.bind(null, item.doc_id)}>关注</Button> :
-                           <div>已关注</div>
+                         item.is_follow ?
+                           <Button onClick={this.unFollowPaper.bind(null, item.doc_id)} type="primary">已关注</Button>
+                           :
+                           <Button onClick={this.followPaper.bind(null, item.doc_id)}>关注</Button>
                        }
             >
               <List.Item.Meta

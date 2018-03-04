@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Tag, Input, Tooltip, Icon, Divider } from 'antd';
+import { pageSize } from "../../../utils/constant";
 
 const CheckableTag = Tag.CheckableTag;
 
@@ -24,18 +25,25 @@ class TagPage extends Component {
 
     this.props.dispatch({ type: 'tag/fetchTag', payload: data })
       .then(() => {
-        const customTags = this.props.customTags;
-        const customTagNames = this.props.customTagNames;
+
         const publicTags = this.props.publicTags;
         const publicTagNames = this.props.publicTagNames;
 
         this.setState({
-          customTags,
-          customTagNames,
           publicTags,
           publicTagNames,
         })
       });
+
+    this.props.dispatch({ type: 'tag/fetchCustomTag', payload: data })
+      .then(() => {
+        const customTags = this.props.customTags;
+        const customTagNames = this.props.customTagNames;
+        this.setState({
+          customTags,
+          customTagNames,
+        })
+      })
   }
 
   handleClose = (removedTagName) => {
@@ -93,80 +101,59 @@ class TagPage extends Component {
   saveInputRef = input => this.input = input;
 
   // public tag
-  publicTagHandleChange(tag, checked) {
+  tagHandleChange(tag, checked) {
     /*const { selectedTags } = this.state;
     const nextSelectedTags = checked ?
       [...selectedTags, tag] :
       selectedTags.filter(t => t !== tag);*/
     const nextSelectedTags = checked ? [tag] : [];
 
-    const tagId = this.state.publicTags.find(v => v.tag_name === tag).tag_id;
-
     if (checked) {
       this.props.dispatch({
         type: 'paper/fetchPaperByTag',
         payload: {
-          tagId: tagId,
+          tagId: tag.tag_id,
           token: this.props.token,
         }
-      });
+      }).then(() => {
+        const papers = this.props.tagPapers;
+        this.props.setPapers(papers);
+      })
     } else {
       this.props.dispatch({
-        type: 'paper/showAllFollowPaper',
+        type: 'paper/fetchAllFollowPaper',
         payload: {
           token: this.props.token,
+          BeginIndex: 0,
+          PageSize: pageSize,
         }
-      });
-    }
-
-    this.setState({ selectedTags: nextSelectedTags });
-  }
-
-  // custom tag
-  customTagHandleChange(tag, checked) {
-    /*const { selectedTags } = this.state;
-    const nextSelectedTags = checked ?
-      [...selectedTags, tag] :
-      selectedTags.filter(t => t !== tag);*/
-    const nextSelectedTags = checked ? [tag] : [];
-
-    const tagId = this.state.customTags.find(v => v.tag_name === tag).tag_id;
-
-    if (checked) {
-      this.props.dispatch({
-        type: 'paper/fetchPaperByTag',
-        payload: {
-          tagId: tagId,
-          token: this.props.token,
-        }
-      });
-    } else {
-      this.props.dispatch({
-        type: 'paper/showAllFollowPaper',
-        payload: {
-          token: this.props.token,
-        }
-      });
+      }).then(() => {
+        const papers = this.props.papers;
+        this.props.setPapers(papers);
+      })
     }
 
     this.setState({ selectedTags: nextSelectedTags });
   }
 
   render() {
-    const { customTagNames, publicTagNames, inputVisible, inputValue, selectedTags } = this.state;
+    const { customTagNames,customTags, publicTags, publicTagNames, inputVisible, inputValue, selectedTags } = this.state;
     return (
       <div>
         <span style={{ fontSize: '16px' }}>公共标签</span>
         <Divider style={{ marginTop: "1px", marginBottom: "1vh" }}/>
 
         <div>
-          {publicTagNames.map(tag => (
-            <CheckableTag
-              key={tag}
+          {publicTags.map(tag => (
+            < CheckableTag
+              key={tag.tag_name}
               checked={selectedTags.indexOf(tag) > -1}
-              onChange={checked => this.publicTagHandleChange(tag, checked)}
+              onChange={checked => this.tagHandleChange(tag, checked)}
+              style={{ marginBottom: '1vh' }}
             >
-              {tag}
+              <div style={{ fontSize: '1.3em' }}>
+                {tag.tag_name} | {tag.count}
+              </div>
             </CheckableTag>
           ))}
         </div>
@@ -176,13 +163,15 @@ class TagPage extends Component {
         <Divider style={{ marginTop: "1px", marginBottom: "1vh" }}/>
 
         <div>
-          {customTagNames.map(tag => (
+          {customTags.map(tag => (
             <CheckableTag
-              key={tag}
+              key={tag.tag_name}
               checked={selectedTags.indexOf(tag) > -1}
-              onChange={checked => this.customTagHandleChange(tag, checked)}
+              onChange={checked => this.tagHandleChange(tag, checked)}
             >
-              {tag}
+              <div style={{ fontSize: '1.3em' }}>
+                {tag.tag_name} | {tag.count}
+              </div>
             </CheckableTag>
           ))}
         </div>
@@ -198,6 +187,8 @@ const mapStateToProps = (state) => {
     customTagNames: state.tag.customTagNames,
     publicTags: state.tag.publicTags,
     publicTagNames: state.tag.publicTagNames,
+    tagPapers: state.paper.tagPapers,
+    papers: state.paper.papers,
     token: state.user.account.token,
   };
 };

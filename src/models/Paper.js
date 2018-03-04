@@ -20,13 +20,22 @@ export default {
   state:
     {
       paperInformation: {},
+      paperInformationPublicTags: [],
+      paperInformationUserTags: [],
       papers: [],
-      tagPapers:[],
+      tagPapers: [],
       comments: [],
       error: false,
     },
   subscriptions: {
     setup({ dispatch, history }) {
+      history.listen(({ pathname }) => {
+        if (pathname === '/') {
+          dispatch({
+            type: 'emptyPapers'
+          });
+        }
+      });
     }
   },
   effects: {
@@ -294,7 +303,7 @@ export default {
       return {
         ...state,
         error: true,
-        tagPapers:[],
+        tagPapers: [],
       }
     },
 
@@ -453,6 +462,8 @@ export default {
         ...state,
         error: false,
         paperInformation: payload,
+        paperInformationPublicTags: payload.tag,
+        paperInformationUserTags: payload.custom,
       }
     },
 
@@ -469,6 +480,14 @@ export default {
         ...state,
         error: false,
         papers: payload,
+      }
+    },
+
+    // clean paper
+    emptyPapers(state) {
+      return {
+        ...state,
+        papers: [],
       }
     },
 
