@@ -68,7 +68,11 @@ export const fetchPaperComment = ({ payload }) => {
   return axios.post(postUrl);
 };
 
-export const commentPaper = ({ payload }) => axios.post('/api/Comment', payload);
+export const commentPaper = ({ payload }) => axios.post('/api/Comment', payload, {
+  headers: {
+    token: payload.token,
+  }
+});
 
 export const deletePaperComment = ({ payload }) => {
   const postUrl = '/api/removeComment?mId=' + payload.m_id;

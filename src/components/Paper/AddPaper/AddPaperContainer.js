@@ -17,9 +17,9 @@ class AddPaperContainer extends Component {
         <TabPane tab={<span><Icon type="file-add"/>导入文献</span>} key="1">
           <AddSinglePaper/>
         </TabPane>
-        <TabPane tab={<span><Icon type="folder-add"/>批量导入文献</span>} key="2">
+       {/* <TabPane tab={<span><Icon type="folder-add"/>批量导入文献</span>} key="2">
           <AddMultiPaper/>
-        </TabPane>
+        </TabPane>*/}
       </Tabs>
     )
   }

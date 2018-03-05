@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Form, Icon, Input, Button, Alert, Select, DatePicker, message } from 'antd';
+import { Form, Icon, Input, Button, Alert, Select, DatePicker, message, Divider } from 'antd';
 import Moment from 'moment';
 
 import SignUpLayout from '../layout/LoginSignUpLayout';
@@ -58,7 +58,8 @@ class ModifyPersonalInformation extends Component {
           type: 'user/modifyUserInformation',
           payload: values
         }).then(() => {
-          message.success("修改成功！ ...:)")
+          if (!this.props.error)
+            message.success("修改成功！ ...:)")
         })
       });
     };
@@ -77,8 +78,30 @@ class ModifyPersonalInformation extends Component {
       }
     };
 
+    const checkIdentification = (rule, value, callback) => {
+      if (value) {
+        if (!/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(value)) {
+          return callback('请输入正确的身份证号... ');
+        }
+        callback();
+      } else {
+        callback();
+      }
+    };
+
+    const checkPhone = (rule, value, callback) => {
+      if (value) {
+        if (!/^1[0-9]{10}$/.test(value)) {
+          return callback('请输入正确的手机号... ！');
+        }
+        callback();
+      } else {
+        callback();
+      }
+    };
+
     const checkConfirmPass = (rule, value, callback) => {
-      if (value && value !== getFieldValue('password')) {
+      if (value && value !== getFieldValue('newPass')) {
         callback('两次输入的密码不一样啊...');
       } else {
         callback();
@@ -93,7 +116,7 @@ class ModifyPersonalInformation extends Component {
             maxWidth: '400px',
           }}
         >
-          {error && <Alert message="发生错误了啊...请重试  :)" type="error"/>}
+          {error && <Alert message="原密码输错了啊...请重试  :)" type="error"/>}
           <FormItem {...formItemLayout} label="电子邮件">
             {getFieldDecorator('email', {
               initialValue: userInformation.email,
@@ -129,7 +152,7 @@ class ModifyPersonalInformation extends Component {
             }
           </FormItem>
           <FormItem {...formItemLayout} label="新密码">
-            {getFieldDecorator('password', {
+            {getFieldDecorator('newPass', {
               rules: [
                 {
                   required: true,
@@ -173,8 +196,7 @@ class ModifyPersonalInformation extends Component {
                   message: '请输入身份证号！',
                 },
                 {
-                  pattern: "/(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)/",
-                  message: '请输入正确的身份证号... ',
+                  validator: checkIdentification,
                 }
               ],
             })(<Input
@@ -194,8 +216,7 @@ class ModifyPersonalInformation extends Component {
                   message: '请输入手机号码！',
                 },
                 {
-                  /*               pattern: "/^1[0-9]{10}$/",
-                                 message: '请输入正确的手机号... ',*/
+                  validator: checkPhone,
                 }
               ],
             })(<Input
@@ -260,6 +281,23 @@ class ModifyPersonalInformation extends Component {
             })(
               <DatePicker placeholder="选择一个日期"/>
             )}
+          </FormItem>
+
+          <Divider/>
+          <FormItem {...formItemLayout} label="请输入原密码">
+            {getFieldDecorator('oldPass', {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入原密码！',
+                }
+              ],
+            })(<Input
+              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+              type="password"
+              placeholder="旧密码"
+            />)
+            }
           </FormItem>
 
           <FormItem>

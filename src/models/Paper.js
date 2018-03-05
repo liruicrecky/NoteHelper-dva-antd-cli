@@ -26,6 +26,7 @@ export default {
       tagPapers: [],
       comments: [],
       error: false,
+      newComment: {},
     },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -146,14 +147,14 @@ export default {
       const { data } = yield call(commentPaper, { payload });
 
       if (data) {
-        if (data.status !== "0001") {
+        if (data.status !== "1") {
           yield put({
             type: 'commentPaperFailed',
           })
         } else {
           yield put({
             type: 'commentPaperSuccess',
-
+            payload: data.result,
           })
         }
       }
@@ -378,10 +379,11 @@ export default {
       }
     },
 
-    commentPaperSuccess(state) {
+    commentPaperSuccess(state, { payload }) {
       return {
         ...state,
         error: false,
+        newComment: payload,
       }
     },
 

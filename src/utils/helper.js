@@ -9,7 +9,7 @@ export const getLocalStorage = key => {
 };
 
 export const getTime = (time) => {
-  return Moment(time*1000).format('YYYY-MM-DD HH:mm');
+  return Moment(time).format('YYYY-MM-DD HH:mm');
 };
 
 export const saveAsFile = (data, type, name) => {

@@ -76,6 +76,7 @@ class PaperDetail extends Component {
           BeginIndex,
           loading: false,
           comments: this.props.comments,
+          paperComment:"",
         })
       });
 
@@ -105,14 +106,28 @@ class PaperDetail extends Component {
 
   onHandleCommentPost = (e) => {
     e.preventDefault();
+    const { paperId } = this.props.match.params;
     const data = {
       userId: this.props.account.userId,
       mContent: this.state.paperComment,
-      docId: this.state.paperId,
+      docId: paperId,
+      token: this.props.account.token,
     };
     this.props.dispatch({
       type: 'paper/commentPaper',
       payload: data,
+    }).then(() => {
+      const newComment = this.props.newComment;
+      const comment = {
+        m_id: newComment.m_id,
+        m_time: newComment.time,
+        m_content: newComment.text,
+        user_id: this.props.account.userId,
+      };
+      const comments = this.state.comments.concat(comment);
+      this.setState({
+        comments,
+      })
     })
   };
 
@@ -222,11 +237,11 @@ class PaperDetail extends Component {
     const { paperId } = this.props.match.params;
 
     const inputValue = state.inputValue;
- /*   let paperInformation = state.paperInformation;
-     let customTagNames = state.customTagNames;
-     if (inputValue && customTagNames.indexOf(inputValue) === -1) {
-       customTagNames = [...customTagNames, inputValue];
-     }*/
+    /*   let paperInformation = state.paperInformation;
+        let customTagNames = state.customTagNames;
+        if (inputValue && customTagNames.indexOf(inputValue) === -1) {
+          customTagNames = [...customTagNames, inputValue];
+        }*/
 
     const data = {
       tagName: inputValue,
@@ -543,6 +558,7 @@ const mapStateToProps = (state) => {
     paperInformationUserTags: state.paper.paperInformationUserTags,
     tagId: state.tag.tagId,
     comments: state.paper.comments,
+    newComment: state.paper.newComment,
     error: state.paper.error,
     account: state.user.account,
   };

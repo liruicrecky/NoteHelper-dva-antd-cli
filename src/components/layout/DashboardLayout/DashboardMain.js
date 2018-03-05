@@ -20,11 +20,12 @@ class DashboardMain extends Component {
     }
   }
 
-/*  componentWillReceiveProps(nextProps) {
-    this.setState({ papers: nextProps.papers });
-  }*/
+  /*  componentWillReceiveProps(nextProps) {
+      this.setState({ papers: nextProps.papers });
+    }*/
 
   followPaper = (paperId) => {
+    const state = this.state;
     const data = {
       docId: paperId,
       token: this.props.token,
@@ -32,6 +33,32 @@ class DashboardMain extends Component {
     this.props.dispatch({
       type: 'paper/followPaper',
       payload: data,
+    }).then(() => {
+      const papers = state.papers;
+      papers.find((v) => v.doc_id === paperId).is_follow = true;
+
+      this.setState({
+        papers,
+      })
+    })
+  };
+
+  unFollowPaper = (paperId) => {
+    const state = this.state;
+    const data = {
+      docId: paperId,
+      token: this.props.token,
+    };
+    this.props.dispatch({
+      type: 'paper/unFollowPaper',
+      payload: data,
+    }).then(() => {
+      const papers = state.papers;
+      papers.find((v) => v.doc_id === paperId).is_follow = false
+
+      this.setState({
+        papers,
+      })
     })
   };
 
@@ -56,7 +83,13 @@ class DashboardMain extends Component {
           dataSource={papers}
           renderItem={item => (
             <List.Item key={item.doc_id}
-                       extra={<Button onClick={this.followPaper.bind(null, item.doc_id)}>关注</Button>}>
+                       extra={
+                         item.is_follow ?
+                           <Button onClick={this.unFollowPaper.bind(null, item.doc_id)} type="primary">已关注</Button>
+                           :
+                           <Button onClick={this.followPaper.bind(null, item.doc_id)}>关注</Button>
+                       }
+            >
               <List.Item.Meta
                 title={<Link to={"/dashboard/paperDetail/" + item.doc_id}>{item.doc_title}</Link>}
                 description={item.doc_publish + " " + item.doc_author}

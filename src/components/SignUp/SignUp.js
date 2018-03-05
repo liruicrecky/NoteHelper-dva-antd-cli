@@ -60,6 +60,28 @@ const SignUp = ({
     }
   };
 
+  const checkIdentification = (rule, value, callback) => {
+    if (value) {
+      if (!/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(value)) {
+        return callback('请输入正确的身份证号... ');
+      }
+      callback();
+    } else {
+      callback();
+    }
+  };
+
+  const checkPhone = (rule, value, callback) => {
+    if (value) {
+      if (!/^1[0-9]{10}$/.test(value)) {
+        return callback('请输入正确的手机号... ！');
+      }
+      callback();
+    } else {
+      callback();
+    }
+  };
+
   const checkConfirmPass = (rule, value, callback) => {
     if (value && value !== getFieldValue('password')) {
       callback('两次输入的密码不一样啊...');
@@ -152,8 +174,7 @@ const SignUp = ({
                 message: '请输入身份证号！',
               },
               {
-                pattern: "/(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)/",
-                message: '请输入正确的身份证号... ',
+                validator: checkIdentification,
               }
             ],
           })(<Input
@@ -172,8 +193,7 @@ const SignUp = ({
                 message: '请输入手机号码！',
               },
               {
-                /*               pattern: "/^1[0-9]{10}$/",
-                               message: '请输入正确的手机号... ',*/
+                validator:checkPhone,
               }
             ],
           })(<Input
